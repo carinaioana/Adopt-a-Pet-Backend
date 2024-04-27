@@ -1,0 +1,70 @@
+﻿# Ignore Visual Studio files
+.vscode/
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Ignore NuGet packages
+*.nuget.props
+*.nuget.targets
+*.lock
+/packages/
+
+# Ignore build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Nn][Yy]/
+*.exe
+*.pdb
+*.dll
+*.log
+*.bin/
+*.obj/
+*.cache/
+*.out/
+*.tmp/
+*.vscode/
+
+# Ignore Visual Studio code coverage results
+.coverage
+*.coverage
+*.runsettings
+
+# Ignore .NET Core artifacts
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore build directories
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Ignore Unity generated files
+Library/
+Temp/
+UnityGenerated/
+
+# Ignore JetBrains Rider files
+.idea/
+*.sln.iml
+
+# Ignore Rider, Visual Studio, and VS Code settings
+*.suo
+*.sln.ide
+.vscode/
+
+# Ignore Roslyn analyzers cache
+# .NET Framework:
+*Analyzers.cache
+# .NET Core:
+*.analyzers*
