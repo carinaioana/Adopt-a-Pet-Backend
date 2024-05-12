@@ -1,5 +1,9 @@
 ﻿using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
+using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
+using AdoptPets.Application.Features.Announcements.Queries;
 using AdoptPets.Application.Features.Announcements.Queries.GetAll;
+using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
+using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncements;
 using AdoptPets.Application.Features.Announcements.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,38 +12,43 @@ namespace AdoptPets.API.Controllers
 {
     public class AnnouncController : ApiControllerBase
     {
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateAnnouncementCommand command)
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(Guid id)
         {
-            var result = await Mediator.Send(command);
+            var deleteEventCommand = new DeleteAnnouncementCommand() { AnnouncementId = id };
+            await Mediator.Send(deleteEventCommand);
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromBody] CreateAnnouncementCommand createAnnouncementCommand)
+        {
+            var response = await Mediator.Send(createAnnouncementCommand);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<AnnouncementDto>>> GetAll()
+        {
+            var dtos = await Mediator.Send(new GetAnnouncementsQuery());
+            return Ok(dtos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AnnouncementDto>> GetById(Guid id)
+        {
+            var result = await Mediator.Send(new GetAnnouncDetailQuery()
+            {
+                AnnouncementId = id
+            });
             if (!result.Success)
             {
-                return BadRequest(result);
+                return NotFound(result);
             }
-            return Ok(result);
+            return Ok(result.Announcement);
         }
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await Mediator.Send(new GetAllAnouncementsQuery());
-            return Ok(result);
-        }
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            var result = await Mediator.Send(new GetByIdAnnouncQuery(id));
-            return Ok(result);
-        }
-       /* [HttpGet("{title}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(string title)
-        {
-            var result = await Mediator.Send(new GetByTitleAnnouncQuery(title));
-            return Ok(result);
-        }*/
     }
 }

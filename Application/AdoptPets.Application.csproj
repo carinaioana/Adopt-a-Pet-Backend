@@ -8,12 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-    <PackageReference Include="SendGrid" Version="9.29.3" />
-    <PackageReference Include="xunit.assert" Version="2.7.1" />
-    <PackageReference Include="xunit.extensibility.core" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,5 @@
 ﻿using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Entities;
-using AdoptPets.Infrastructure;
 
 namespace AdoptPets.Infrastructure.Repositories
 {

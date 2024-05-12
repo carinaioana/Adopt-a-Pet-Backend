@@ -1,56 +1,64 @@
-﻿using BackupMonitoring.Domain.Common;
+﻿using AdoptPets.Domain.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdoptPets.Domain.Entities
 {
     public class Animal : AuditableEntity
     {
-        public Animal(string animalType, Guid userId, bool isAdopted)
+        public Animal(string animalName, string animalType)
         {
             AnimalId = Guid.NewGuid();
+            AnimalName = animalName;
             AnimalType = animalType;
-            UserId = userId;
-            IsAdopted = isAdopted;
         }
+
         [Key]
         public Guid AnimalId { get; private set; }
-        public Guid UserId { get; private set; }
-        public bool IsAdopted { get; private set; }
-        public string ? AnimalName { get; private set; }
-        public  List<string>? AnimalDescription { get; private set; }
+        public string AnimalName { get; private set; } = string.Empty;
+        public string? AnimalDescription { get; private set; }
         public string AnimalType { get; private set; } = string.Empty;
-        public int AnimalAge {  get; private set; }
-        public string ? AnimalBreed { get; private set; }
+        public int AnimalAge { get; private set; }
+        public string? AnimalBreed { get; private set; }
+        public string? AnimalSex { get; private set; }
+        public List<string>? PersonalityTraits { get; private set; }
+        public string? ImageUrl { get; private set; }
 
-        /* public int UserId { get; set; } // Foreign Key
+        public MedicalHistory MedicalHistory { get; set; }
+        public ICollection<Vaccination> Vaccinations { get; set; }
+        public ICollection<Observation> Observations { get; set; }
+        public ICollection<Deworming> Dewormings { get; set; }
 
-         [ForeignKey("UserId")]
-         public required User User { get; set; }*/
-
-        public static Result<Animal> Create(string animalType, Guid userId)
+        public static Result<Animal> Create(string animalName, string animalType)
         {
-             if (string.IsNullOrWhiteSpace(animalType))
+            if (string.IsNullOrWhiteSpace(animalType))
             {
                 return Result<Animal>.Failure("AnimalType is required");
             }
-            if (userId == Guid.Empty)
+            if (string.IsNullOrWhiteSpace(animalName))
             {
-                return Result<Animal>.Failure("UserId is required");
+                return Result<Animal>.Failure("AnimalName is required");
             }
-            return Result<Animal>.Success(new Animal(animalType, userId, false));
+            return Result<Animal>.Success(new Animal(animalName, animalType));
+        }
+        public void AttachImageUrl(string imageUrl)
+        {
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                ImageUrl = imageUrl;
+            }
         }
 
-        public void AttachName(string name)
+        public void AttachPersonalityTraits(List<string> traits)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (traits != null && traits.Any())
             {
-                AnimalName = name;
+                PersonalityTraits = traits;
             }
         }
 
-        public void AttachDescription(List<string> description)
+        public void AttachDescription(string description)
         {
-            if (description != null && description.Any())
+            if (!string.IsNullOrEmpty(description))
             {
                 AnimalDescription = description;
             }
@@ -63,6 +71,13 @@ namespace AdoptPets.Domain.Entities
                 AnimalBreed = breed;
             }
         }
+        public void AttachSex(string sex)
+        {
+            if (!string.IsNullOrEmpty(sex))
+            {
+                AnimalSex = sex;
+            }
+        }
 
         public void SetAge(int age)
         {
@@ -72,10 +87,17 @@ namespace AdoptPets.Domain.Entities
             }
         }
 
-        public void MarkAsAdopted()
+        public void Update(string animalName, string animalType, int animalAge, string? animalBreed, string? animalSex, string? imageUrl, string? animalDescription, List<string>? personalityTraits)
         {
-            IsAdopted = true;
-        }
+            AnimalAge = animalAge;
+            AnimalName = animalName;
+            AnimalType = animalType;
+            AnimalBreed = animalBreed;
+            AnimalSex = animalSex;
+            ImageUrl = imageUrl;
+            AnimalDescription = animalDescription;
+            PersonalityTraits = personalityTraits;
 
+        }
     }
 }

@@ -21,9 +21,14 @@ namespace AdoptPets.Application.Features.Animals.Queries.GetAll
                 response.Animals = result.Value.Select(animal => new AnimalDto
                 {
                     AnimalId = animal.AnimalId,
+                    AnimalName = animal.AnimalName,
                     AnimalType = animal.AnimalType,
-                    UserId = animal.UserId,
-                    IsAdopted = animal.IsAdopted
+                    AnimalBreed = animal.AnimalBreed,
+                    AnimalAge = animal.AnimalAge,
+                    AnimalSex = animal.AnimalSex,
+                    AnimalDescription = animal.AnimalDescription,
+                    PersonalityTraits = animal.PersonalityTraits,
+                    ImageUrl = animal.ImageUrl,
                 }).ToList();
             }
             return response;

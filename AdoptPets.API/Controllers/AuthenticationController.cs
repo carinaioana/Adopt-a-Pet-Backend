@@ -1,7 +1,10 @@
-﻿using AdoptPets.Application.Contracts.Identity;
+﻿using AdoptPets.API.Models;
+using AdoptPets.Application.Contracts.Identity;
 using AdoptPets.Application.Models.Identity;
 using Identity.Models;
 using Microsoft.AspNetCore.Mvc;
+using AdoptPets.Application.Contracts.Interfaces;
+
 
 namespace AdoptPets.API.Controllers
 {
@@ -11,11 +14,13 @@ namespace AdoptPets.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ILogger<AuthenticationController> _logger;
+        private readonly ICurrentUserService currentUserService;
 
-        public AuthenticationController(IAuthService authService, ILogger<AuthenticationController> logger)
+        public AuthenticationController(IAuthService authService, ILogger<AuthenticationController> logger, ICurrentUserService currentUserService)
         {
             _authService = authService;
             _logger = logger;
+            this.currentUserService = currentUserService;
         }
 
         [HttpPost]
@@ -70,6 +75,33 @@ namespace AdoptPets.API.Controllers
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout();
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("currentuserinfo")]
+        public CurrentUser CurrentUserInfo()
+        {
+            if (this.currentUserService.GetCurrentUserId() == null)
+            {
+                return new CurrentUser
+                {
+                    IsAuthenticated = false
+                };
+            }
+            return new CurrentUser
+            {
+                IsAuthenticated = true,
+                UserName = this.currentUserService.GetCurrentUserId(),
+                Claims = this.currentUserService.GetCurrentClaimsPrincipal().Claims.ToDictionary(c => c.Type, c => c.Value)
+            };
         }
     }
 }

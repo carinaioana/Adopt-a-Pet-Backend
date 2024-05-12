@@ -14,20 +14,12 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                 .NotNull()
                 .MaximumLength(100)
                 .WithMessage("{PropertyName} must not exceed 100 characters.");
-            RuleFor(a => a.UserId)
-                .NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull();
             RuleFor(a => a.AnnouncementDate)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
              RuleFor(a => a)
                 .Must(AnnouncementTitleAndDateUnique)
-                .WithMessage("An event with the same name and date already exists.");/*
-            RuleFor(a => a.AnimalId).NotEmpty().WithMessage("{PropertyName} is required.")
-                .NotNull()
-                .NotEqual(Guid.Empty)
-                .WithMessage("{PropertyName} is required.");*/
-
+                .WithMessage("An event with the same name and date already exists.");
             this.repository = repository;
         }
         private bool AnnouncementTitleAndDateUnique(CreateAnnouncementCommand command)

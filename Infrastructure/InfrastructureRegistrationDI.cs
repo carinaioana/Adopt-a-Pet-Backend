@@ -26,12 +26,13 @@ namespace AdoptPets.Infrastructure
             services.AddScoped
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
-            services.AddScoped<
-                IAnimalRepository, AnimalRepository>();
-            services.AddScoped<
-                IAnnouncementRepository, AnnouncementRepository>();
-            services.AddScoped<
-                IEmailService, EmailService>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
+            services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+            services.AddScoped<IVaccinationRepository, VaccinationRepository>();
+            services.AddScoped<IMedicalHistoryRepository, MedicalHistoryRepository>();
+            services.AddScoped<IDewormingRepository, DewormingRepository>();
+            services.AddScoped<IObservationRepository, ObservationRepository>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

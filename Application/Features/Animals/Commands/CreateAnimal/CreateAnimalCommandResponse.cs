@@ -5,6 +5,6 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
     public class CreateAnimalCommandResponse : BaseResponse
     {
         public CreateAnimalCommandResponse() : base() { }
-        public CreateAnimalDto Animal {  get; set; }
+        public CreateAnimalDto Animal { get; set; } = default!;
     }
 }

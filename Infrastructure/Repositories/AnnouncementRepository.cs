@@ -1,7 +1,6 @@
-﻿using AdoptPets.Application.Features.Announcements;
-using AdoptPets.Application.Persistence;
+﻿using AdoptPets.Application.Persistence;
+using AdoptPets.Domain.Common;
 using AdoptPets.Domain.Entities;
-using AdoptPets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdoptPets.Infrastructure.Repositories
@@ -19,9 +18,24 @@ namespace AdoptPets.Infrastructure.Repositories
             return Task.FromResult(matches);
         }
 
-        Task<string> IAnnouncementRepository.FindByTitleAsync(string title)
+        Task<Announcement> IAnnouncementRepository.FindByTitleAsync(string title)
         {
             throw new NotImplementedException();
         }
-    }
+
+        /*public override async Task<Result<Announcement>> FindByIdAsync(Guid id)
+        {
+            var result = await context.Announcements.Include(e => e.Animal).FirstOrDefaultAsync(e => e.AnnouncementId.Equals(id))!;
+            if (result == null)
+            {
+                return Result<Announcement>.Failure($"Entity with id {id} not found");
+            }
+            return Result<Announcement>.Success(result);
+        }
+        public override async Task<Result<IReadOnlyList<Announcement>>> GetAllAsync()
+        {
+            var result = await context.Announcements.Include(e =>e.Animal).AsNoTracking().ToListAsync();
+            return Result<IReadOnlyList<Announcement>>.Success(result);
+        }*/
+    } 
 }

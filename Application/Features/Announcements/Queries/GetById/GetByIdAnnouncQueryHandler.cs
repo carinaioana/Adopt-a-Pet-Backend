@@ -19,8 +19,9 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetById
                 {
                     AnnouncementId = announc.Value.AnnouncementId,
                     AnnouncementTitle = announc.Value.AnnouncementTitle,
-                    UserId = announc.Value.UserId,
-                    AnnouncementDate = announc.Value.AnnouncementDate
+                    AnnouncementDate = announc.Value.AnnouncementDate,
+                    AnnouncementDescription = announc.Value.AnnouncementDescription,
+                    ImageUrl = announc.Value.ImageUrl,
                 };
             }
             return new AnnouncementDto();

@@ -19,9 +19,14 @@ namespace AdoptPets.Application.Features.Animals.Queries.GetById
                 return new AnimalDto
                 {
                     AnimalId = animal.Value.AnimalId,
+                    AnimalName = animal.Value.AnimalName,
                     AnimalType = animal.Value.AnimalType,
-                    UserId = animal.Value.UserId,
-                    IsAdopted = animal.Value.IsAdopted
+                    AnimalBreed = animal.Value.AnimalBreed,
+                    AnimalAge = animal.Value.AnimalAge,
+                    AnimalDescription = animal.Value.AnimalDescription,
+                    PersonalityTraits = animal.Value.PersonalityTraits,
+                    ImageUrl = animal.Value.ImageUrl,
+
                 };
             }
             return new  AnimalDto();

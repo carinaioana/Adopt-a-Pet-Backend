@@ -1,10 +1,11 @@
-﻿using AdoptPets.Application.Responses;
+﻿using AdoptPets.Application.Features.Announcements.Queries;
+using AdoptPets.Application.Responses;
 
 namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement
 {
     public class CreateAnnouncementCommandResponse : BaseResponse
     {
         public CreateAnnouncementCommandResponse() : base() { }
-        public CreateAnnouncementDto Announcement { get; set; }
+        public CreateAnnouncementDto  Announcement { get; set; } = default!;
     }
 }

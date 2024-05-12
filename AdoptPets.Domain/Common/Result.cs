@@ -1,4 +1,4 @@
-﻿namespace BackupMonitoring.Domain.Common
+﻿namespace AdoptPets.Domain.Common
 {
     public class Result<T> where T : class
     {

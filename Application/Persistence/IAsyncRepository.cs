@@ -1,4 +1,4 @@
-﻿using BackupMonitoring.Domain.Common;
+﻿using AdoptPets.Domain.Common;
 
 namespace AdoptPets.Application.Persistence
 {

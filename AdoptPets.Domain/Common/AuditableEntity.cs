@@ -1,4 +1,4 @@
-﻿namespace BackupMonitoring.Domain.Common
+﻿namespace AdoptPets.Domain.Common
 {
     public class AuditableEntity
     {
@@ -7,6 +7,6 @@
         public string? LastModifiedBy { get; set; }
         public DateTime LastModifiedDate { get; set; }
 
-    } 
+    }
 
 }

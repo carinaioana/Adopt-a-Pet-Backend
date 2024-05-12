@@ -4,11 +4,11 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 {
     public class CreateAnnouncementCommand :  IRequest<CreateAnnouncementCommandResponse>
     {
-        public string AnnouncementTitle { get; set; } = default!;
-        public Guid UserId { get; set; }
+
+        public string AnnouncementTitle { get; set; } = string.Empty;
         public DateTime AnnouncementDate { get; set; }
-        public Guid AnimalId { get; private set; }
-        public string? AnnouncementDescription { get; private set; }
+        public string? ImageUrl { get; set; }
+        public string? AnnouncementDescription { get; set; }
 
     }
 }

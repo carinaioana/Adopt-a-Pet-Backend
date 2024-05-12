@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Application.Features.Animals.Commands.CreateAnimal;
+using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
 using AdoptPets.Application.Features.Animals.Queries.GetAll;
 using AdoptPets.Application.Features.Animals.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ namespace AdoptPets.API.Controllers
 {
     public class AnimalsController : ApiControllerBase
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateAnimalCommand command)
@@ -18,6 +19,25 @@ namespace AdoptPets.API.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(UpdateAnimalCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                return BadRequest(result); 
+            }
+
             return Ok(result);
         }
         [HttpGet]

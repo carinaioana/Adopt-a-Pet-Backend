@@ -23,7 +23,8 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAll
                     AnnouncementId = announcement.AnnouncementId,
                     AnnouncementTitle = announcement.AnnouncementTitle,
                     AnnouncementDate = announcement.AnnouncementDate,
-                    UserId = announcement.UserId
+                    AnnouncementDescription = announcement.AnnouncementDescription,
+                    ImageUrl = announcement.ImageUrl
                 }).ToList();
             }
             return response;

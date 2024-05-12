@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Application.Contracts;
+using AdoptPets.Application.Features.Announcements.Queries;
 using AdoptPets.Application.Models;
 using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Entities;
@@ -33,10 +34,18 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                     ValidationsErrors = validatorResult.Errors.Select(error => error.ErrorMessage).ToList()
                 };
             }
-            var announcement = Announcement.Create(request.AnnouncementTitle, request.UserId, request.AnnouncementDate);
+            var announcement = Announcement.Create(request.AnnouncementTitle, request.AnnouncementDate);
+
             if (announcement.IsSuccess)
             {
-                announcement.Value.AttachAnimal(request.AnimalId);
+#pragma warning disable CS8604 // Possible null reference argument.
+                announcement.Value.AttachDescription(request.AnnouncementDescription);
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
+                announcement.Value.AttachImageUrl(request.ImageUrl);
+#pragma warning restore CS8604 // Possible null reference argument.
+
+
                 var result = announcementRepository.AddAsync(announcement.Value);
 
                 var email = new Mail
@@ -58,7 +67,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                         ValidationsErrors = new List<string> { "Email sending failed" }
                     };
                 }
-                return new CreateAnnouncementCommandResponse()
+                return new CreateAnnouncementCommandResponse
                 {
                     Success = true,
                     Announcement = new CreateAnnouncementDto
@@ -66,7 +75,9 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                         AnnouncementId = announcement.Value.AnnouncementId,
                         AnnouncementTitle = announcement.Value.AnnouncementTitle,
                         AnnouncementDate = announcement.Value.AnnouncementDate,
-                        UserId = announcement.Value.UserId,
+                        AnnouncementDescription = announcement.Value.AnnouncementDescription,
+                        ImageUrl = announcement.Value.ImageUrl,
+ 
                     }
                 };
             }
