@@ -2,6 +2,7 @@
 using AdoptPets.Domain.Common;
 using AdoptPets.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AdoptPets.Infrastructure
 {
@@ -28,13 +29,16 @@ namespace AdoptPets.Infrastructure
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedBy = currentUserService.GetCurrentClaimsPrincipal()?.Claims.FirstOrDefault(c => c.Type == "name")?.Value!;
+                    entry.Entity.CreatedBy = currentUserService.GetCurrentUserId();
+                    
                     entry.Entity.CreatedDate = DateTime.UtcNow;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
-                    entry.Entity.LastModifiedBy = currentUserService.GetCurrentClaimsPrincipal()?.Claims.FirstOrDefault(c => c.Type == "name")?.Value!;
+                    //entry.Entity.LastModifiedBy = currentUserService.GetCurrentClaimsPrincipal()?.Claims.FirstOrDefault(c => c.Type == "name")?.Value!;
+                    entry.Entity.CreatedBy = currentUserService.GetCurrentUserId();
+
                     entry.Entity.LastModifiedDate = DateTime.UtcNow;
                 }
             }

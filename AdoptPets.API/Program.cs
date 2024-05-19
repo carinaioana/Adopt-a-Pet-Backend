@@ -1,4 +1,4 @@
-using AdoptPets.Application;
+ï»¿using AdoptPets.Application;
 using AdoptPets.API.Services;
 using AdoptPets.Application.Contracts.Interfaces;
 using AdoptPets.Application.Models;
@@ -7,20 +7,32 @@ using Identity;
 using Microsoft.OpenApi.Models;
 using AdoptPets.API.Utility;
 
-
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCors();
 
-
+// Add HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
+
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
+// Register services
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-// Add services to the container.
+
+// Add infrastructure and identity services to DI
 builder.Services.AddInfrastrutureIdentityToDI(builder.Configuration);
 builder.Services.AddInfrastructureToDI(builder.Configuration);
+
+// Add application services
 builder.Services.AddApplicationServices();
+
+// Add controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -36,29 +48,27 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                  {
-                    {
-                      new OpenApiSecurityScheme
-                      {
-                        Reference = new OpenApiReference
-                          {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                          },
-                          Scheme = "oauth2",
-                          Name = "Bearer",
-                          In = ParameterLocation.Header,
-
-                        },
-                        new List<string>()
-                      }
-                    });
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
 
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "Adopt a Pet API",
-
     });
 
     c.OperationFilter<FileResultContentTypeOperationFilter>();
@@ -66,25 +76,25 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors(builder =>
-{
-    builder.WithOrigins("http://localhost:5173") // Înlocuie?te cu URL-ul frontend-ului t?u React
-           .AllowAnyHeader()
-           .AllowAnyMethod();
-});
-//app.UseCors("AllowSpecificOrigin");
+
+// Use CORS
+app.UseCors("Open");
+
+// Use HTTPS redirection
 app.UseHttpsRedirection();
 
+// Use authentication and authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers
 app.MapControllers();
 
+// Run the application
 app.Run();
-
-//axios.get('https://localhost:7215/api/endpoint')

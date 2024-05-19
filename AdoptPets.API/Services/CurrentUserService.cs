@@ -6,19 +6,19 @@ namespace AdoptPets.API.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier)!;
         public ClaimsPrincipal GetCurrentClaimsPrincipal()
         {
-            if (httpContextAccessor.HttpContext != null && httpContextAccessor.HttpContext.User != null)
+            if (_httpContextAccessor.HttpContext != null && _httpContextAccessor.HttpContext.User != null)
             {
-                return httpContextAccessor.HttpContext.User;
+                return _httpContextAccessor.HttpContext.User;
             }
 
             return null!;
@@ -26,7 +26,7 @@ namespace AdoptPets.API.Services
 
         public string GetCurrentUserId()
         {
-            return GetCurrentClaimsPrincipal()?.GetObjectId()!;
+            return UserId;
         }
     }
 }

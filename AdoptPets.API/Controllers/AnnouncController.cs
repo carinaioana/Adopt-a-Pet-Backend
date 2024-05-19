@@ -1,11 +1,8 @@
 ﻿using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
 using AdoptPets.Application.Features.Announcements.Queries;
-using AdoptPets.Application.Features.Announcements.Queries.GetAll;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncements;
-using AdoptPets.Application.Features.Announcements.Queries.GetById;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdoptPets.API.Controllers

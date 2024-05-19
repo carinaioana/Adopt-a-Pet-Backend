@@ -1,7 +1,5 @@
 ﻿using AdoptPets.Application.Persistence;
-using AdoptPets.Domain.Common;
 using AdoptPets.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdoptPets.Infrastructure.Repositories
 {
@@ -17,7 +15,7 @@ namespace AdoptPets.Infrastructure.Repositories
             && a.AnnouncementDate.Date.Equals(announcementDate.Date));
             return Task.FromResult(matches);
         }
-
+       
         Task<Announcement> IAnnouncementRepository.FindByTitleAsync(string title)
         {
             throw new NotImplementedException();

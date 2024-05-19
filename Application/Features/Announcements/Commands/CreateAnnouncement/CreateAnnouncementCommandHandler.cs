@@ -1,10 +1,12 @@
 ﻿using AdoptPets.Application.Contracts;
-using AdoptPets.Application.Features.Announcements.Queries;
+using AdoptPets.Application.Contracts.Interfaces;
 using AdoptPets.Application.Models;
 using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement
 {
@@ -13,18 +15,31 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
         private readonly IAnnouncementRepository announcementRepository;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateAnnouncementCommandHandler> logger;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ICurrentUserService currentUserService;
 
-        public CreateAnnouncementCommandHandler(IAnnouncementRepository repository, IEmailService emailService, ILogger<CreateAnnouncementCommandHandler> logger)
+        public CreateAnnouncementCommandHandler(
+            IAnnouncementRepository repository,
+            IEmailService emailService,
+            ILogger<CreateAnnouncementCommandHandler> logger,
+            IHttpContextAccessor httpContextAccessor,
+            ICurrentUserService currentUserService)
         {
             this.announcementRepository = repository;
             this.emailService = emailService;
             this.logger = logger;
+            this.httpContextAccessor = httpContextAccessor;
+            this.currentUserService = currentUserService;
         }
 
         public async Task<CreateAnnouncementCommandResponse> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateAnnouncementCommandValidator(announcementRepository);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+
+            string userId = currentUserService.GetCurrentUserId();
+
+       
 
             if (!validatorResult.IsValid)
             {
@@ -44,6 +59,11 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 #pragma warning disable CS8604 // Possible null reference argument.
                 announcement.Value.AttachImageUrl(request.ImageUrl);
 #pragma warning restore CS8604 // Possible null reference argument.
+
+                announcement.Value.CreatedBy = userId;
+                announcement.Value.LastModifiedBy = userId;
+                announcement.Value.CreatedDate = DateTime.UtcNow;
+                announcement.Value.LastModifiedDate = DateTime.UtcNow;
 
 
                 var result = announcementRepository.AddAsync(announcement.Value);
@@ -77,6 +97,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                         AnnouncementDate = announcement.Value.AnnouncementDate,
                         AnnouncementDescription = announcement.Value.AnnouncementDescription,
                         ImageUrl = announcement.Value.ImageUrl,
+                        
  
                     }
                 };

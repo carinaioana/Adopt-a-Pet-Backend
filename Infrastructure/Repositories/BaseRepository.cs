@@ -1,6 +1,5 @@
 ﻿using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Common;
-using AdoptPets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdoptPets.Infrastructure.Repositories
@@ -13,6 +12,7 @@ namespace AdoptPets.Infrastructure.Repositories
         {
             this.context = context;
         }
+
         public virtual async Task<Result<T>> AddAsync(T entity)
         {
             await context.Set<T>().AddAsync(entity);

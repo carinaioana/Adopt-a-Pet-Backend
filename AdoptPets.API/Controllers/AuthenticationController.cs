@@ -4,6 +4,8 @@ using AdoptPets.Application.Models.Identity;
 using Identity.Models;
 using Microsoft.AspNetCore.Mvc;
 using AdoptPets.Application.Contracts.Interfaces;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace AdoptPets.API.Controllers
@@ -63,6 +65,7 @@ namespace AdoptPets.API.Controllers
 
                 var (status, message) = await _authService.Registration(model, UserRoles.User);
 
+
                 if (status == 0)
                 {
                     return BadRequest(message);
@@ -84,23 +87,38 @@ namespace AdoptPets.API.Controllers
             await _authService.Logout();
             return Ok();
         }
-
+        [Authorize]
         [HttpGet]
         [Route("currentuserinfo")]
+        /*public async Task<IActionResult> CurrentUserInfo()
+        {
+            string userId = ClaimTypes.NameIdentifier;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authenticated" });
+            }
+
+            return Ok(new { userID = userId });
+        }*/
         public CurrentUser CurrentUserInfo()
         {
-            if (this.currentUserService.GetCurrentUserId() == null)
+            var currentUserId = currentUserService.GetCurrentUserId();
+            var currentClaimsPrincipal = currentUserService.GetCurrentClaimsPrincipal();
+
+            if (currentUserId == null || currentClaimsPrincipal == null)
             {
                 return new CurrentUser
                 {
                     IsAuthenticated = false
                 };
             }
+
             return new CurrentUser
             {
                 IsAuthenticated = true,
-                UserName = this.currentUserService.GetCurrentUserId(),
-                Claims = this.currentUserService.GetCurrentClaimsPrincipal().Claims.ToDictionary(c => c.Type, c => c.Value)
+                UserName = currentUserId,
+                Claims = currentClaimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value)
             };
         }
     }
