@@ -1,8 +1,4 @@
-﻿using AdoptPets.Application.Features.Animals.Queries.GetAll;
-using AdoptPets.Application.Features.Animals.Queries.GetById;
-using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
-using AdoptPets.Application.Features.Announcements.Queries;
-using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
+﻿using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
 using AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormings;
 using AdoptPets.Application.Features.Dewormings.Queries.GetByIdDeworming;
 using Microsoft.AspNetCore.Authorization;

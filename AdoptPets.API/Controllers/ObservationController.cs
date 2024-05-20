@@ -1,6 +1,4 @@
-﻿using AdoptPets.Application.Features.Animals.Queries.GetAll;
-using AdoptPets.Application.Features.Animals.Queries.GetById;
-using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
+﻿using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 using AdoptPets.Application.Features.Observations.Queries.GetByIdObservation;
 using Microsoft.AspNetCore.Authorization;

@@ -1,7 +1,8 @@
 ﻿using AdoptPets.Application.Features.Animals.Commands.CreateAnimal;
 using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
-using AdoptPets.Application.Features.Animals.Queries.GetAll;
+using AdoptPets.Application.Features.Animals.Queries.GetAllByUser;
 using AdoptPets.Application.Features.Animals.Queries.GetById;
+using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,12 +41,17 @@ namespace AdoptPets.API.Controllers
 
             return Ok(result);
         }
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("my-animals")]
+        public async Task<ActionResult<GetAllAnimalsByUserResponse>> GetMyAnimals()
         {
-            var result = await Mediator.Send(new  GetAllAnimalsQuery());
-            return Ok(result);
+            var dtos = await Mediator.Send(new GetAllAnimalsByUserQuery());
+
+            if (!dtos.Success)
+            {
+                return NotFound(dtos);
+            }
+
+            return Ok(dtos);
         }
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

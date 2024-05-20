@@ -1,4 +1,5 @@
-﻿using AdoptPets.Application.Persistence;
+﻿using AdoptPets.Application.Contracts.Interfaces;
+using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Entities;
 using MediatR;
 
@@ -7,10 +8,12 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
     public class CreateAnimalCommandHandler : IRequestHandler<CreateAnimalCommand, CreateAnimalCommandResponse>
     {
         private readonly IAnimalRepository _repository;
+        private readonly ICurrentUserService currentUserService;
 
-        public CreateAnimalCommandHandler(IAnimalRepository repository)
+        public CreateAnimalCommandHandler(IAnimalRepository repository, ICurrentUserService currentUserService)
         {
             _repository = repository;
+            this.currentUserService = currentUserService;
         }
 
         public async Task<CreateAnimalCommandResponse> Handle(CreateAnimalCommand request, CancellationToken cancellationToken)
@@ -18,6 +21,9 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
             var response = new CreateAnimalCommandResponse();
             var validator = new CreateAnimalCommandValidator();
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+
+            string userId = currentUserService.GetCurrentUserId();
+
             if (!validatorResult.IsValid)
             {
                 return new CreateAnimalCommandResponse
@@ -46,6 +52,11 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
 #pragma warning disable CS8604 // Possible null reference argument.
                 animal.Value.AttachSex(request.AnimalSex);
 #pragma warning restore CS8604 // Possible null reference argument.
+
+                animal.Value.CreatedBy = userId;
+                animal.Value.LastModifiedBy = userId;
+                animal.Value.CreatedDate = DateTime.UtcNow;
+                animal.Value.LastModifiedDate = DateTime.UtcNow;
 
                 var result =  _repository.AddAsync(animal.Value);
 

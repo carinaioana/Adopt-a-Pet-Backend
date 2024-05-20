@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Application.Persistence;
+using AdoptPets.Domain.Entities;
 using MediatR;
 
 namespace AdoptPets.Application.Features.Announcements.Queries.GetAll
@@ -14,20 +15,20 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAll
 
         public async Task<GetAllAnnouncementsResponse> Handle(GetAllAnouncementsQuery request, CancellationToken cancellationToken)
         {
-            GetAllAnnouncementsResponse response = new();
             var result = await repository.GetAllAsync();
-            if (result.IsSuccess)
-            {
-                response.Announcements = result.Value.Select(announcement => new AnnouncementDto
+            var announcements = result.Value.Select(a => new AnnouncementDto
                 {
-                    AnnouncementId = announcement.AnnouncementId,
-                    AnnouncementTitle = announcement.AnnouncementTitle,
-                    AnnouncementDate = announcement.AnnouncementDate,
-                    AnnouncementDescription = announcement.AnnouncementDescription,
-                    ImageUrl = announcement.ImageUrl
-                }).ToList();
-            }
-            return response;
+                    AnnouncementId = a.AnnouncementId,
+                    AnnouncementTitle = a.AnnouncementTitle,
+                    AnnouncementDate = a.AnnouncementDate,
+                    AnnouncementDescription = a.AnnouncementDescription,
+                    ImageUrl = a.ImageUrl
+            }).ToList();
+            return new GetAllAnnouncementsResponse
+            {
+                Announcements = announcements,
+                Success = true
+            };
         }
     }
 }

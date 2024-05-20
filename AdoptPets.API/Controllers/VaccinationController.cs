@@ -1,5 +1,4 @@
-﻿using AdoptPets.Application.Features.Animals.Queries.GetAll;
-using AdoptPets.Application.Features.Animals.Queries.GetById;
+﻿
 using AdoptPets.Application.Features.Vaccinations.Commands.CreateVaccination;
 using AdoptPets.Application.Features.Vaccinations.Queries.GetAllVaccinations;
 using AdoptPets.Application.Features.Vaccinations.Queries.GetByIdVaccination;

@@ -9,6 +9,8 @@ namespace AdoptPets.Application.Features.Announcements.Queries
         public string? AnnouncementDescription { get; set; }
         public DateTime AnnouncementDate { get; set; }
         public string? ImageUrl { get; set; }
+        public string? CreatedBy { get; set; }
+
 
 
     }

@@ -6,5 +6,8 @@ namespace AdoptPets.Application.Persistence
     {
         Task<Announcement> FindByTitleAsync(string title);
         Task<bool> IsAnnouncementTitleAndDateUnique(string announcementTitle, DateTime announcementDate);
+        Task<List<Announcement>> GetAnnouncementsByUserAsync(string userId);
+       
+
     }
 }
