@@ -22,7 +22,9 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAll
                     AnnouncementTitle = a.AnnouncementTitle,
                     AnnouncementDate = a.AnnouncementDate,
                     AnnouncementDescription = a.AnnouncementDescription,
-                    ImageUrl = a.ImageUrl
+                    ImageUrl = a.ImageUrl,
+                    CreatedBy = a.CreatedBy
+                    
             }).ToList();
             return new GetAllAnnouncementsResponse
             {

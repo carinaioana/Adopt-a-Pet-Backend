@@ -35,7 +35,7 @@ namespace Identity.Services
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username,
-                //Name = model.Name
+                Name = model.Name
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
@@ -61,7 +61,7 @@ namespace Identity.Services
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
-               new Claim(ClaimTypes.Name, user.UserName!),
+               new Claim(ClaimTypes.Name, user.Name!),
                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };

@@ -18,7 +18,7 @@ namespace AdoptPets.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -50,6 +50,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -59,6 +60,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -89,6 +91,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -98,6 +101,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -118,6 +122,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -131,6 +136,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -153,12 +159,14 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -185,6 +193,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -194,6 +203,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -220,6 +230,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -229,6 +240,7 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")

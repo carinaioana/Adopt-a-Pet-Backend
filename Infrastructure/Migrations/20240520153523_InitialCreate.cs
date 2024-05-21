@@ -25,9 +25,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     AnimalSex = table.Column<string>(type: "text", nullable: true),
                     PersonalityTraits = table.Column<List<string>>(type: "text[]", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -44,9 +44,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     AnnouncementDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AnnouncementDescription = table.Column<string>(type: "text", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -62,9 +62,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DewormingType = table.Column<string>(type: "text", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -85,9 +85,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     MedicalHistoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -109,9 +109,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ObservationDescription = table.Column<string>(type: "text", nullable: false),
                     AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -133,9 +133,9 @@ namespace AdoptPets.Infrastructure.Migrations
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     VaccineName = table.Column<string>(type: "text", nullable: false),
                     AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
