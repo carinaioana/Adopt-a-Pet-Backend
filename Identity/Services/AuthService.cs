@@ -98,5 +98,23 @@ namespace Identity.Services
             return tokenHandler.WriteToken(token);
         }
 
+        public async Task<UserInfo> GetUserInfoById(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserInfo
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Name = user.Name // Access the custom Name property
+            };
+        }
+
+
     }
 }
