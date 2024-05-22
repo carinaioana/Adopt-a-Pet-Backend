@@ -121,5 +121,26 @@ namespace AdoptPets.API.Controllers
                 Claims = currentClaimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value)
             };
         }
+        [Authorize]
+        [HttpGet]
+        [Route("userinfo/{id}")]
+        public async Task<IActionResult> GetUserInfoById(string id)
+        {
+            try
+            {
+                var userInfo = await _authService.GetUserInfoById(id);
+                if (userInfo == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                return Ok(userInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching user info");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching user info" });
+            }
+        }
     }
 }

@@ -17,6 +17,6 @@ namespace AdoptPets.Application.Models.Identity
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }
