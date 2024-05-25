@@ -59,6 +59,8 @@ namespace AdoptPets.Infrastructure.Repositories
             await context.SaveChangesAsync();
             return Result<T>.Success(entity);
         }
+
+        
     }
 
 }

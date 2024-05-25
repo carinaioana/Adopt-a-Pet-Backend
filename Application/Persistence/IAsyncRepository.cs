@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Domain.Common;
+using AdoptPets.Domain.Entities;
 
 namespace AdoptPets.Application.Persistence
 {
@@ -10,5 +11,6 @@ namespace AdoptPets.Application.Persistence
         Task<Result<T>> DeleteAsync(Guid id);
         Task<Result<IReadOnlyList<T>>> GetPagedReponseAsync(int page, int size);
         Task<Result<IReadOnlyList<T>>> GetAllAsync();
+
     }
 }

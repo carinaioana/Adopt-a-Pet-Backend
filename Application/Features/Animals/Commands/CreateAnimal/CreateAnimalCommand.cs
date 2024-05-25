@@ -14,6 +14,7 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
         public string? AnimalBreed { get; set; }
         public string? AnimalSex { get; set; }
         public string? ImageUrl { get; set; }
+       
 
     }
 }

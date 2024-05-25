@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Application.Persistence;
+using AdoptPets.Domain.Common;
 using AdoptPets.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,24 @@ namespace AdoptPets.Infrastructure.Repositories
             return Task.FromResult(matches);
         }
        
-        public Task<Announcement> FindByTitleAsync(string title)
+        public async Task<Result<Announcement>> FindByTitleAsync(string title)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var announcement = await context.Announcements
+                    .FirstOrDefaultAsync(a => a.AnnouncementTitle.Equals(title, StringComparison.OrdinalIgnoreCase));
+
+                if (announcement == null)
+                {
+                    return Result<Announcement>.Failure($"Announcement with title '{title}' not found");
+                }
+
+                return Result<Announcement>.Success(announcement);
+            }
+            catch (Exception ex)
+            {
+                return Result<Announcement>.Failure($"An error occurred while retrieving the announcement: {ex.Message}");
+            }
         }
 
         public Task<List<Announcement>> GetAnnouncementsByUserAsync(string userId)

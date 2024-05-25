@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AdoptPets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AdoptPets.Infrastructure.Migrations
 {
     [DbContext(typeof(AdoptPetsContext))]
-    partial class AdoptPetsContextModelSnapshot : ModelSnapshot
+    [Migration("20240525215727_SecondCreate")]
+    partial class SecondCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +68,6 @@ namespace AdoptPets.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("MedicalHistoryId")
-                        .HasColumnType("uuid");
 
                     b.Property<List<string>>("PersonalityTraits")
                         .HasColumnType("text[]");

@@ -6,7 +6,7 @@ namespace AdoptPets.Domain.Entities
 {
     public class MedicalHistory : AuditableEntity
     {
-        public MedicalHistory(Guid animalId, Guid userId)
+        public MedicalHistory(Guid animalId, string userId)
         {
             MedicalHistoryId = Guid.NewGuid();
             AnimalId = animalId;
@@ -17,15 +17,15 @@ namespace AdoptPets.Domain.Entities
         public Guid MedicalHistoryId { get; private set; }
         public Guid AnimalId { get; private set; }
         public Animal Animal { get; set; }
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; }
 
-        public static Result<MedicalHistory> Create(Guid animalId, Guid userId)
+        public static Result<MedicalHistory> Create(Guid animalId, string userId)
         {
             if (animalId == Guid.Empty)
             {
                 return Result<MedicalHistory>.Failure("AnimalId is required.");
             }
-            if (userId == default)
+            if (string.IsNullOrEmpty(userId))
             {
                 return Result<MedicalHistory>.Failure("UserId should not be default.");
             }

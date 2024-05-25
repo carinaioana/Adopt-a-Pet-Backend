@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AdoptPets.Application.Features.Animals.Commands.UpdateAnimal
 {
-    public class UpdateAnimalCommandHandler : IRequestHandler<UpdateAnimalCommand, UpdateAnimalViewModel>
+    public class UpdateAnimalCommandHandler : IRequestHandler<UpdateAnimalCommand, UpdateAnimalCommandResponse>
     {
         private readonly IAnimalRepository repository;
 
@@ -12,42 +12,77 @@ namespace AdoptPets.Application.Features.Animals.Commands.UpdateAnimal
             this.repository = repository;
         }
 
-        public async Task<UpdateAnimalViewModel> Handle(UpdateAnimalCommand request, CancellationToken cancellationToken)
+        public async Task<UpdateAnimalCommandResponse> Handle(UpdateAnimalCommand request, CancellationToken cancellationToken)
         {
 
             var validator = new UpdateAnimalCommandValidator();
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+
             if (!validatorResult.IsValid)
             {
-                return new UpdateAnimalViewModel
+                return new UpdateAnimalCommandResponse
                 {
                     Success = false,
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
-            var animal = await repository.FindByIdAsync(request.AnimalId);
-            if (animal == null)
+            var animalResult = await repository.FindByIdAsync(request.AnimalId);
+            if (!animalResult.IsSuccess)
             {
-                return new UpdateAnimalViewModel
+                return new UpdateAnimalCommandResponse
                 {
                     Success = false,
-                    ValidationsErrors = ["Animal not found"]
+                    Message = "Animal not found"
                 };
             }
-            animal.Value.Update(request.AnimalName, request.AnimalType, request.AnimalAge, request.AnimalBreed, request.AnimalSex, request.ImageUrl, request.AnimalDescription, request.PersonalityTraits);
-            return new UpdateAnimalViewModel
+            var animal = animalResult.Value;
+
+           if(request.AnimalName != null)
+            {
+                animal.UpdateName(request.AnimalName);
+            }
+            if (request.AnimalType != null)
+            {
+                animal.UpdateType(request.AnimalType);
+            }
+            if (request.AnimalDescription != null)
+            {
+                animal.UpdateDescription(request.AnimalDescription);
+            }
+            if (request.PersonalityTraits != null)
+            {
+                animal.UpdatePersonalityTraits(request.PersonalityTraits);
+            }
+            if (request.AnimalAge != 0)
+            {
+                animal.UpdateAge(request.AnimalAge);
+            }
+            if (request.AnimalBreed != null)
+            {
+                animal.UpdateBreed(request.AnimalBreed);
+            }
+            if (request.ImageUrl != null)
+            {
+                animal.UpdateImageUrl(request.ImageUrl);
+            }
+            if (request.AnimalSex != null)
+            {
+                animal.UpdateSex(request.AnimalSex);
+            }
+
+            var updateResult = await repository.UpdateAsync(animal);
+            if(!updateResult.IsSuccess)
+            {
+                return new UpdateAnimalCommandResponse
+                {
+                    Success = false,
+                    Message = "Error updating animal"
+                };
+            }
+            return new UpdateAnimalCommandResponse
             {
                 Success = true,
-                AnimalId = animal.Value.AnimalId,
-                AnimalName = animal.Value.AnimalName,
-                AnimalType = animal.Value.AnimalType,
-                AnimalBreed = animal.Value.AnimalBreed,
-                AnimalAge = animal.Value.AnimalAge,
-                AnimalSex = animal.Value.AnimalSex,
-                AnimalDescription = animal.Value.AnimalDescription,
-                PersonalityTraits = animal.Value.PersonalityTraits,
-                ImageUrl = animal.Value.ImageUrl,
-                
+                Message = "Animal updated successfully"
             };
         }
     }

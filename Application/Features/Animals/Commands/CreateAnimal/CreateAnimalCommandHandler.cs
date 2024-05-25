@@ -8,12 +8,17 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
     public class CreateAnimalCommandHandler : IRequestHandler<CreateAnimalCommand, CreateAnimalCommandResponse>
     {
         private readonly IAnimalRepository _repository;
-        private readonly ICurrentUserService currentUserService;
+        private readonly IMedicalHistoryRepository _medicalHistoryRepository;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateAnimalCommandHandler(IAnimalRepository repository, ICurrentUserService currentUserService)
+        public CreateAnimalCommandHandler(
+            IAnimalRepository repository,
+            IMedicalHistoryRepository medicalHistoryRepository,
+            ICurrentUserService currentUserService)
         {
             _repository = repository;
-            this.currentUserService = currentUserService;
+            _medicalHistoryRepository = medicalHistoryRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CreateAnimalCommandResponse> Handle(CreateAnimalCommand request, CancellationToken cancellationToken)
@@ -22,7 +27,7 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
             var validator = new CreateAnimalCommandValidator();
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
-            string userId = currentUserService.GetCurrentUserId();
+            string userId = _currentUserService.GetCurrentUserId();
 
             if (!validatorResult.IsValid)
             {
@@ -36,54 +41,68 @@ namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
             var animal = Animal.Create(request.AnimalName, request.AnimalType);
             if (animal.IsSuccess)
             {
-#pragma warning disable CS8604 // Possible null reference argument.
-                animal.Value.AttachBreed(request.AnimalBreed);
-#pragma warning restore CS8604 // Possible null reference argument.
-#pragma warning disable CS8604 // Possible null reference argument.
-                animal.Value.AttachDescription(request.AnimalDescription);
-#pragma warning restore CS8604 // Possible null reference argument.
-#pragma warning disable CS8604 // Possible null reference argument.
-                animal.Value.AttachPersonalityTraits(request.PersonalityTraits);
-#pragma warning restore CS8604 // Possible null reference argument.
-                animal.Value.SetAge(request.AnimalAge);
-#pragma warning disable CS8604 // Possible null reference argument.
-                animal.Value.AttachImageUrl(request.ImageUrl);
-#pragma warning restore CS8604 // Possible null reference argument.
-#pragma warning disable CS8604 // Possible null reference argument.
-                animal.Value.AttachSex(request.AnimalSex);
-#pragma warning restore CS8604 // Possible null reference argument.
+                var animalEntity = animal.Value;
+                animalEntity.AttachBreed(request.AnimalBreed);
+                animalEntity.AttachDescription(request.AnimalDescription);
+                animalEntity.AttachPersonalityTraits(request.PersonalityTraits);
+                animalEntity.SetAge(request.AnimalAge);
+                animalEntity.AttachImageUrl(request.ImageUrl);
+                animalEntity.AttachSex(request.AnimalSex);
 
-                animal.Value.CreatedBy = userId;
-                animal.Value.LastModifiedBy = userId;
-                animal.Value.CreatedDate = DateTime.UtcNow;
-                animal.Value.LastModifiedDate = DateTime.UtcNow;
+                animalEntity.CreatedBy = userId;
+                animalEntity.LastModifiedBy = userId;
+                animalEntity.CreatedDate = DateTime.UtcNow;
+                animalEntity.LastModifiedDate = DateTime.UtcNow;
 
-                var result =  _repository.AddAsync(animal.Value);
+                var result = await _repository.AddAsync(animalEntity);
 
-
-                return new CreateAnimalCommandResponse
+                if (result != null)
                 {
-                    Success = true,
-                    Animal = new CreateAnimalDto
+                    var medicalHistory = MedicalHistory.Create(animal.Value.AnimalId, userId);
+                    if (medicalHistory.IsSuccess)
                     {
-                        AnimalId = animal.Value.AnimalId,
-                        AnimalName = animal.Value.AnimalName,
-                        AnimalType = animal.Value.AnimalType,
-                        AnimalBreed = animal.Value.AnimalBreed,
-                        AnimalAge = animal.Value.AnimalAge,
-                        AnimalSex = animal.Value.AnimalSex,
-                        AnimalDescription = animal.Value.AnimalDescription,
-                        PersonalityTraits = animal.Value.PersonalityTraits,
-                        ImageUrl = animal.Value.ImageUrl,
+                        var medicalHistoryEntity = medicalHistory.Value;
+                        medicalHistoryEntity.CreatedBy = userId;
+                        medicalHistoryEntity.LastModifiedBy = userId;
+                        medicalHistoryEntity.CreatedDate = DateTime.UtcNow;
+                        medicalHistoryEntity.LastModifiedDate = DateTime.UtcNow;
+                        await _medicalHistoryRepository.AddAsync(medicalHistoryEntity);
 
+                        animalEntity.AttachMedicalHistoryId(medicalHistoryEntity.MedicalHistoryId);
+                        await _repository.UpdateAsync(animalEntity);
+
+                        return new CreateAnimalCommandResponse
+                        {
+                            Success = true,
+                            Animal = new AnimalDto
+                            {
+                                AnimalId = animalEntity.AnimalId,
+                                AnimalName = animalEntity.AnimalName,
+                                AnimalType = animalEntity.AnimalType,
+                                AnimalBreed = animalEntity.AnimalBreed,
+                                AnimalAge = animalEntity.AnimalAge,
+                                AnimalSex = animalEntity.AnimalSex,
+                                AnimalDescription = animalEntity.AnimalDescription,
+                                PersonalityTraits = animalEntity.PersonalityTraits,
+                                ImageUrl = animalEntity.ImageUrl,
+                                MedicalHistory = new MedicalHistoryDto
+                                {
+                                    MedicalHistoryId = medicalHistoryEntity.MedicalHistoryId,
+                                    AnimalId = animalEntity.AnimalId,
+                                    UserId = userId
+                                   
+                                }
+                            }
+                        };
                     }
-                };
+                }
             }
+
             return new CreateAnimalCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = new List<string> { animal.Error }
-                };
-            }
+            {
+                Success = false,
+                ValidationsErrors = new List<string> { animal.Error }
+            };
+        }
     }
 }

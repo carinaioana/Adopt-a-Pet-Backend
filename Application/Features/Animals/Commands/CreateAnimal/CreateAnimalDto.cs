@@ -12,6 +12,6 @@
         public string? AnimalBreed { get; set; }
         public string? ImageUrl { get; set; }
         public string? AnimalSex { get; set; }
-
+     
     }
 }

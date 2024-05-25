@@ -45,5 +45,41 @@ namespace AdoptPets.Domain.Entities
                 ImageUrl = imageUrl;
             }
         }
+        public void UpdateAnnouncement(string announcementTitle, DateTime announcementDate, string? announcementDescription, string? imageUrl)
+        {
+            AnnouncementTitle = announcementTitle;
+            AnnouncementDate = announcementDate;
+            AnnouncementDescription = announcementDescription;
+            ImageUrl = imageUrl;
+        }
+        public void UpdateAnnouncementTitle(string announcementTitle)
+        {
+            if (!string.IsNullOrEmpty(announcementTitle))
+            {
+                AnnouncementTitle = announcementTitle;
+            }
+        }
+        public void UpdateAnnouncementDescription(string announcementDescription)
+        {
+            if (!string.IsNullOrEmpty(announcementDescription))
+            {
+                AnnouncementDescription = announcementDescription;
+            }  
+        }
+        public void UpdateAnnouncementImageUrl(string imageUrl)
+        {
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                ImageUrl = imageUrl;
+            }
+        }
+
+        /*public void UpdateAnnouncementDate(DateTime announcementDate)
+        {
+            if (announcementDate != default)
+            {
+                announcementDate = announcementDate;
+            }
+        }*/
     }
 }

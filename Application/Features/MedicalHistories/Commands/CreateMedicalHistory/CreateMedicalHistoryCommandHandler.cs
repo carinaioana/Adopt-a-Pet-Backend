@@ -16,39 +16,40 @@ namespace AdoptPets.Application.Features.MedicalHistories.Commands.CreateMedical
 
         public async Task<CreateMedicalHistoryCommandResponse> Handle(CreateMedicalHistoryCommand request, CancellationToken cancellationToken)
         {
-            var response = new CreateMedicalHistoryCommandResponse();
+            throw new NotImplementedException();
+            /* var response = new CreateMedicalHistoryCommandResponse();
 
-            var validator = new CreateMedicalHistoryCommandValidator();
-            var validatorResult = await validator.ValidateAsync(request, cancellationToken);
-            if (!validatorResult.IsValid)
-            { 
-                return new CreateMedicalHistoryCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
-                };
-            }
+             var validator = new CreateMedicalHistoryCommandValidator();
+             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+             if (!validatorResult.IsValid)
+             { 
+                 return new CreateMedicalHistoryCommandResponse
+                 {
+                     Success = false,
+                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
+                 };
+             }
 
-            var medicalHistory = MedicalHistory.Create(request.AnimalId, request.UserId);
-            if (medicalHistory.IsSuccess)
-            {
-                var result = repository.AddAsync(medicalHistory.Value);
-                return new CreateMedicalHistoryCommandResponse
-                {
-                    Success = true,
-                    MedicalHistoryDto = new CreateMedicalHistoryDto
-                    {
-                        MedicalHistoryId = medicalHistory.Value.MedicalHistoryId,
-                        AnimalId = medicalHistory.Value.AnimalId,
-                        UserId = medicalHistory.Value.UserId
-                    }
-                };
-            }
-            return new CreateMedicalHistoryCommandResponse
-            {
-                Success = false,
-                ValidationsErrors = new List<string> { medicalHistory.Error }
-            };
+             var medicalHistory = MedicalHistory.Create(request.AnimalId, request.UserId);
+             if (medicalHistory.IsSuccess)
+             {
+                 var result = repository.AddAsync(medicalHistory.Value);
+                 return new CreateMedicalHistoryCommandResponse
+                 {
+                     Success = true,
+                     MedicalHistoryDto = new CreateMedicalHistoryDto
+                     {
+                         MedicalHistoryId = medicalHistory.Value.MedicalHistoryId,
+                         AnimalId = medicalHistory.Value.AnimalId,
+                         UserId = medicalHistory.Value.UserId
+                     }
+                 };
+             }
+             return new CreateMedicalHistoryCommandResponse
+             {
+                 Success = false,
+                 ValidationsErrors = new List<string> { medicalHistory.Error }
+             };*/
         }
     }
 }

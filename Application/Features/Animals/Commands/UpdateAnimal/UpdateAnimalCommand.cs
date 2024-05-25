@@ -2,7 +2,7 @@
 
 namespace AdoptPets.Application.Features.Animals.Commands.UpdateAnimal
 {
-    public class UpdateAnimalCommand : IRequest<UpdateAnimalViewModel>
+    public class UpdateAnimalCommand : IRequest<UpdateAnimalCommandResponse>
     {
         public Guid AnimalId { get; set; }
         public string AnimalType { get; set; } = string.Empty;

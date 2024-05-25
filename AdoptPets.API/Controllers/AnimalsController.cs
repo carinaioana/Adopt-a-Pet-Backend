@@ -1,8 +1,8 @@
 ﻿using AdoptPets.Application.Features.Animals.Commands.CreateAnimal;
+using AdoptPets.Application.Features.Animals.Commands.DeleteAnimal.DeleteAnimal;
 using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
 using AdoptPets.Application.Features.Animals.Queries.GetAllByUser;
 using AdoptPets.Application.Features.Animals.Queries.GetById;
-using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,25 +22,44 @@ namespace AdoptPets.API.Controllers
             }
             return Ok(result);
         }
-        [HttpPut]
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var deleteAnimalCommand = new DeleteAnimalCommand() { AnimalId = id };
+            await Mediator.Send(deleteAnimalCommand);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(UpdateAnimalCommand command)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(Guid id, UpdateAnimalCommand command)
         {
-            if (!ModelState.IsValid)
+            if (id != command.AnimalId)
             {
-                return BadRequest(ModelState);
+                return BadRequest("The name in the URL does not match the name in the command.");
             }
 
             var result = await Mediator.Send(command);
 
             if (!result.Success)
             {
-                return BadRequest(result); 
+                if (result.Message == "Animal not found")
+                {
+                    return NotFound(result.Message);
+                }
+
+                return BadRequest(result.Message);
             }
 
-            return Ok(result);
+            return Ok(result.Message);
         }
+
         [HttpGet("my-animals")]
         public async Task<ActionResult<GetAllAnimalsByUserResponse>> GetMyAnimals()
         {

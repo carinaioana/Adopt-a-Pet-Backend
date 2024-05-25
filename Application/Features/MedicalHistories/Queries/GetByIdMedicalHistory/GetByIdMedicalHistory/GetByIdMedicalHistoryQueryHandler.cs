@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using AdoptPets.Application.Features.MedicalHistories.Commands.CreateMedicalHistory;
 using AdoptPets.Application.Persistence;
+using AdoptPets.Application.Models.Identity;
 
 namespace AdoptPets.Application.Features.MedicalHistories.Queries.GetByIdMedicalHistory.GetByIdMedicalHistory
 {
-    public class GetByIdMedicalHistoryQueryHandler : IRequestHandler<GetByIdMedicalHistoryQuery, CreateMedicalHistoryDto>
+    public class GetByIdMedicalHistoryQueryHandler : IRequestHandler<GetByIdMedicalHistoryQuery, MedicalHistoryDto>
     {
         private readonly IMedicalHistoryRepository repository;
 
@@ -13,19 +14,20 @@ namespace AdoptPets.Application.Features.MedicalHistories.Queries.GetByIdMedical
             this.repository = repository;
         }
 
-        public async Task<CreateMedicalHistoryDto> Handle(GetByIdMedicalHistoryQuery request, CancellationToken cancellationToken)
+        public async Task<MedicalHistoryDto> Handle(GetByIdMedicalHistoryQuery request, CancellationToken cancellationToken)
         {
             var medicalHistory = await repository.FindByIdAsync(request.id);
             if (medicalHistory.IsSuccess)
             {
-                return new CreateMedicalHistoryDto
+                return new MedicalHistoryDto
                 {
                     MedicalHistoryId = medicalHistory.Value.MedicalHistoryId,
                     AnimalId = medicalHistory.Value.AnimalId,
-                    UserId = medicalHistory.Value.UserId
+                    UserId = medicalHistory.Value.UserId,
+                    
                 };
             }
-            return new CreateMedicalHistoryDto();
+            return new MedicalHistoryDto();
         }
     }
 }

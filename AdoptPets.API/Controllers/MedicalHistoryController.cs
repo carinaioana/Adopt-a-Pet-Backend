@@ -11,7 +11,7 @@ namespace AdoptPets.API.Controllers
 
     public class MedicalHistoryController : ApiControllerBase
     {
-        [Authorize(Roles = "User")]
+       /* [Authorize(Roles = "User")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateMedicalHistoryCommand command)
@@ -22,7 +22,7 @@ namespace AdoptPets.API.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
-        }
+        }*/
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
