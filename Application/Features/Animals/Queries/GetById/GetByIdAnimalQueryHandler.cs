@@ -1,4 +1,5 @@
-﻿using AdoptPets.Application.Persistence;
+﻿using AdoptPets.Application.Models;
+using AdoptPets.Application.Persistence;
 using MediatR;
 
 namespace AdoptPets.Application.Features.Animals.Queries.GetById

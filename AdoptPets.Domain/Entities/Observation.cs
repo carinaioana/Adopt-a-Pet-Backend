@@ -36,7 +36,35 @@ namespace AdoptPets.Domain.Entities
             }
             return Result<Observation>.Success(new Observation(animalId, date, observationDescription));
         }
-        
+        public void Update(DateTime date, string observationDescription)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            if (string.IsNullOrWhiteSpace(observationDescription))
+            {
+                throw new ArgumentNullException(nameof(observationDescription), "Observation is required.");
+            }
+            Date = date;
+            ObservationDescription = observationDescription;
+        }
+        public void UpdateObservationDescription(string observationDescription)
+        {
+            if (string.IsNullOrWhiteSpace(observationDescription))
+            {
+                throw new ArgumentNullException(nameof(observationDescription), "Observation is required.");
+            }
+            ObservationDescription = observationDescription;
+        }
+        public void UpdateDate(DateTime date)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            Date = date;
+        }
 
     }
 }

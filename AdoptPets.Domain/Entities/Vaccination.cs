@@ -36,6 +36,34 @@ namespace AdoptPets.Domain.Entities
             }
             return Result<Vaccination>.Success(new Vaccination(animalId, date, vaccineName));
         }
-        
+        public void Update(DateTime date, string vaccineName)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            if (string.IsNullOrWhiteSpace(vaccineName))
+            {
+                throw new ArgumentNullException(nameof(vaccineName), "VaccineName is required.");
+            }
+            Date = date;
+            VaccineName = vaccineName;
+        }
+        public void UpdateVaccineName(string vaccineName)
+        {
+            if (string.IsNullOrWhiteSpace(vaccineName))
+            {
+                throw new ArgumentNullException(nameof(vaccineName), "VaccineName is required.");
+            }
+            VaccineName = vaccineName;
+        }
+        public void UpdateDate(DateTime date)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            Date = date;
+        }
     }
 }
