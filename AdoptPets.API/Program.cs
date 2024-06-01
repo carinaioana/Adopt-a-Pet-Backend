@@ -6,6 +6,10 @@ using AdoptPets.Infrastructure;
 using Identity;
 using Microsoft.OpenApi.Models;
 using AdoptPets.API.Utility;
+using AdoptPets.Application.Persistence;
+using AdoptPets.Infrastructure.Repositories;
+using Amazon.S3;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,11 @@ builder.Services.AddInfrastructureToDI(builder.Configuration);
 
 // Add application services
 builder.Services.AddApplicationServices();
+// AWS S3 configuration
+builder.Services.AddAWSService<IAmazonS3>();
+
+// Register S3Service
+builder.Services.AddTransient<IS3Service, S3Service>();
 
 // Add controllers
 builder.Services.AddControllers();
