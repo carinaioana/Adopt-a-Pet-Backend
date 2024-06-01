@@ -50,7 +50,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -60,7 +59,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -94,7 +92,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -104,7 +101,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -125,7 +121,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -139,7 +134,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -162,14 +156,12 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -197,7 +189,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -207,7 +198,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -234,7 +224,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -244,7 +233,6 @@ namespace AdoptPets.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")

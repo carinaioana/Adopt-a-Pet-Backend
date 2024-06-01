@@ -1,6 +1,10 @@
-﻿using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
+﻿using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
+using AdoptPets.Application.Features.Dewormings.Queries.GetDewormingsByAnimal;
+using AdoptPets.Application.Features.Observations;
+using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 using AdoptPets.Application.Features.Observations.Queries.GetByIdObservation;
+using AdoptPets.Application.Features.Observations.Queries.GetObservationsByAnimal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +38,15 @@ namespace AdoptPets.API.Controllers
         {
             var result = await Mediator.Send(new GetByIdObservationQuery(id));
             return Ok(result);
+        }
+        [HttpGet("animal/{animalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ObservationDto>> GetByAnimalId(Guid animalId)
+        {
+            var result = await Mediator.Send(new GetObservationsByAnimalQuery(animalId));
+            return Ok(result);
+
         }
     }
 }

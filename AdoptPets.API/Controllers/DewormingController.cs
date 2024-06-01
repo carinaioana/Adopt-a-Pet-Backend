@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
 using AdoptPets.Application.Features.Dewormings.Commands.DeleteDeworming;
+using AdoptPets.Application.Features.Animals.Queries.GetAllByUser;
+using AdoptPets.Application.Features.Dewormings.Queries.GetDewormingsByAnimal;
+using AdoptPets.Application.Features.Dewormings;
+using static AdoptPets.Application.Features.Dewormings.Queries.GetDewormingsByAnimal.GetByAnimalDewormingQuery;
 
 namespace AdoptPets.API.Controllers
 {
@@ -45,5 +49,18 @@ namespace AdoptPets.API.Controllers
             var result = await Mediator.Send(new GetByIdDewormingQuery(id));
             return Ok(result);
         }
+        [HttpGet("animal/{animalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CreateDewormingDto>> GetByAnimalId(Guid animalId)
+        {
+            var result = await Mediator.Send(new GetByAnimalDewormingQuery
+            {
+                AnimalId = animalId
+            });
+            return Ok(result);
+
+        }
+
     }
 }

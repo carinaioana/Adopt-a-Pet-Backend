@@ -1,9 +1,13 @@
 ﻿
+using AdoptPets.Application.Features.Observations.Queries.GetObservationsByAnimal;
+using AdoptPets.Application.Features.Observations;
 using AdoptPets.Application.Features.Vaccinations.Commands.CreateVaccination;
 using AdoptPets.Application.Features.Vaccinations.Queries.GetAllVaccinations;
 using AdoptPets.Application.Features.Vaccinations.Queries.GetByIdVaccination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AdoptPets.Application.Features.Vaccinations;
+using AdoptPets.Application.Features.Vaccinations.Queries.GetVaccinationsByAnimal;
 
 namespace AdoptPets.API.Controllers
 {
@@ -34,6 +38,15 @@ namespace AdoptPets.API.Controllers
         {
             var result = await Mediator.Send(new GetByIdVaccinationQuery(id));
             return Ok(result);
+        }
+        [HttpGet("animal/{animalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<VaccinationDto>> GetByAnimalId(Guid animalId)
+        {
+            var result = await Mediator.Send(new GetVaccinationsByAnimalQuery(animalId));
+            return Ok(result);
+
         }
     }
 }

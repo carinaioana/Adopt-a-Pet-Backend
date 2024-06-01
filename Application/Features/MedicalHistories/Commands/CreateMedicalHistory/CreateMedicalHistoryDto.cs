@@ -7,8 +7,5 @@ namespace AdoptPets.Application.Features.MedicalHistories.Commands.CreateMedical
         public Guid MedicalHistoryId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public Guid AnimalId { get; set; }
-/*        public AnimalDto Animal { get; set; }
-*/
-
     }
 }

@@ -25,6 +25,7 @@ namespace AdoptPets.Infrastructure.Migrations
                     AnimalSex = table.Column<string>(type: "text", nullable: true),
                     PersonalityTraits = table.Column<List<string>>(type: "text[]", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    MedicalHistoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
@@ -84,7 +85,7 @@ namespace AdoptPets.Infrastructure.Migrations
                 {
                     MedicalHistoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
