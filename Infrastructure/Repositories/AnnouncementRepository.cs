@@ -17,7 +17,7 @@ namespace AdoptPets.Infrastructure.Repositories
             && a.AnnouncementDate.Date.Equals(announcementDate.Date));
             return Task.FromResult(matches);
         }
-       
+
         public async Task<Result<Announcement>> FindByTitleAsync(string title)
         {
             try
@@ -42,7 +42,9 @@ namespace AdoptPets.Infrastructure.Repositories
         {
             return context.Announcements
             .Where(a => a.CreatedBy != null && a.CreatedBy == userId)
-            .ToListAsync(); 
+            .ToListAsync();
         }
-    } 
+       
+    }
 }
+

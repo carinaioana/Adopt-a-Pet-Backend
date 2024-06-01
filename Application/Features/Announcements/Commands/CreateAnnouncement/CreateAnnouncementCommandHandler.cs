@@ -12,6 +12,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 {
     public class CreateAnnouncementCommandHandler : IRequestHandler<CreateAnnouncementCommand, CreateAnnouncementCommandResponse>
     {
+        private readonly IS3Service s3Service;
         private readonly IAnnouncementRepository announcementRepository;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateAnnouncementCommandHandler> logger;
@@ -19,12 +20,14 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
         private readonly ICurrentUserService currentUserService;
 
         public CreateAnnouncementCommandHandler(
+            IS3Service s3Service,
             IAnnouncementRepository repository,
             IEmailService emailService,
             ILogger<CreateAnnouncementCommandHandler> logger,
             IHttpContextAccessor httpContextAccessor,
             ICurrentUserService currentUserService)
         {
+            this.s3Service = s3Service;
             this.announcementRepository = repository;
             this.emailService = emailService;
             this.logger = logger;
@@ -39,7 +42,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 
             string userId = currentUserService.GetCurrentUserId();
 
-       
+
 
             if (!validatorResult.IsValid)
             {
@@ -57,57 +60,73 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                 announcement.Value.AttachDescription(request.AnnouncementDescription);
 #pragma warning restore CS8604 // Possible null reference argument.
 #pragma warning disable CS8604 // Possible null reference argument.
-                announcement.Value.AttachImageUrl(request.ImageUrl);
+                if (request.ImageFile != null)
+                {
+                    var uploadResult = await s3Service.UploadFileAsync(request.ImageFile);
+                    if (uploadResult.Success)
+                    {
+                        request.ImageUrl = uploadResult.Url;
+                    }
+                    else
+                    {
+                        return new CreateAnnouncementCommandResponse()
+                        {
+                            Success = false,
+                            ValidationsErrors = new List<string> { "Image upload failed" }
+                        };
+                    }
+                }
+                    announcement.Value.AttachImageUrl(request.ImageUrl);
 #pragma warning restore CS8604 // Possible null reference argument.
 
-                announcement.Value.CreatedBy = userId;
-                announcement.Value.LastModifiedBy = userId;
-                announcement.Value.CreatedDate = DateTime.UtcNow;
-                announcement.Value.LastModifiedDate = DateTime.UtcNow;
+                    announcement.Value.CreatedBy = userId;
+                    announcement.Value.LastModifiedBy = userId;
+                    announcement.Value.CreatedDate = DateTime.UtcNow;
+                    announcement.Value.LastModifiedDate = DateTime.UtcNow;
 
 
-                var result = announcementRepository.AddAsync(announcement.Value);
+                    var result = announcementRepository.AddAsync(announcement.Value);
 
-                var email = new Mail
-                {
-                    To = "carinasrb@yahoo.com",
-                    Subject = "New Announcement created",
-                    Body = $"A new announcement with name: {announcement.Value.AnnouncementTitle} and date: {announcement.Value.AnnouncementDate} has been created."
-                };
-                try
-                {
-                    await emailService.SendEmailAsync(email);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Email sending failed");
+                    var email = new Mail
+                    {
+                        To = "carinasrb@yahoo.com",
+                        Subject = "New Announcement created",
+                        Body = $"A new announcement with name: {announcement.Value.AnnouncementTitle} and date: {announcement.Value.AnnouncementDate} has been created."
+                    };
+                    try
+                    {
+                        await emailService.SendEmailAsync(email);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "Email sending failed");
+                        return new CreateAnnouncementCommandResponse
+                        {
+                            Success = false,
+                            ValidationsErrors = new List<string> { "Email sending failed" }
+                        };
+                    }
                     return new CreateAnnouncementCommandResponse
                     {
-                        Success = false,
-                        ValidationsErrors = new List<string> { "Email sending failed" }
+                        Success = true,
+                        Announcement = new CreateAnnouncementDto
+                        {
+                            AnnouncementId = announcement.Value.AnnouncementId,
+                            AnnouncementTitle = announcement.Value.AnnouncementTitle,
+                            AnnouncementDate = announcement.Value.AnnouncementDate,
+                            AnnouncementDescription = announcement.Value.AnnouncementDescription,
+                            ImageUrl = announcement.Value.ImageUrl,
+
+
+                        }
                     };
                 }
                 return new CreateAnnouncementCommandResponse
                 {
-                    Success = true,
-                    Announcement = new CreateAnnouncementDto
-                    {
-                        AnnouncementId = announcement.Value.AnnouncementId,
-                        AnnouncementTitle = announcement.Value.AnnouncementTitle,
-                        AnnouncementDate = announcement.Value.AnnouncementDate,
-                        AnnouncementDescription = announcement.Value.AnnouncementDescription,
-                        ImageUrl = announcement.Value.ImageUrl,
-                        
- 
-                    }
+                    Success = false,
+                    ValidationsErrors = new List<string> { announcement.Error }
                 };
             }
-            return new CreateAnnouncementCommandResponse
-            {
-                Success = false,
-                ValidationsErrors = new List<string> { announcement.Error }
-            };
         }
-    }
 }
 

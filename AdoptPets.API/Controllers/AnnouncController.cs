@@ -1,11 +1,11 @@
-﻿using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
-using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
+﻿using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
-using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Queries;
 using AdoptPets.Application.Features.Announcements.Queries.GetAll;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
+using Amazon.S3.Model;
+using Amazon.S3;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdoptPets.API.Controllers
@@ -22,38 +22,27 @@ namespace AdoptPets.API.Controllers
             await Mediator.Send(deleteEventCommand);
             return NoContent();
         }
-
         [HttpPost]
-        public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromBody] CreateAnnouncementCommand createAnnouncementCommand)
+        public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromForm] CreateAnnouncementCommand createAnnouncementCommand, IFormFile imageFile)
         {
+            if (imageFile != null)
+            {
+                createAnnouncementCommand.ImageFile = imageFile;
+            }
+            else
+            {
+                return BadRequest(new CreateAnnouncementCommandResponse
+                {
+                    Success = false,
+                    ValidationsErrors = new List<string> { "Image upload failed" }
+                });
+            }
+
             var response = await Mediator.Send(createAnnouncementCommand);
             return Ok(response);
         }
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Guid id, UpdateAnnouncementCommand command)
-        {
-            if (id != command.AnnouncementId)
-            {
-                return BadRequest("The name in the URL does not match the name in the command.");
-            }
 
-            var result = await Mediator.Send(command);
 
-            if (!result.Success)
-            {
-                if (result.Message == "Announcement not found")
-                {
-                    return NotFound(result.Message);
-                }
-
-                return BadRequest(result.Message);
-            }
-
-            return Ok(result.Message);
-        }
         [HttpGet]
         public async Task<ActionResult<List<AnnouncementDto>>> GetAll()
         {

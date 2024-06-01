@@ -1,4 +1,5 @@
-﻿using AdoptPets.Domain.Entities;
+﻿using AdoptPets.Application.Models;
+using AdoptPets.Domain.Entities;
 
 namespace AdoptPets.Application.Features
 {

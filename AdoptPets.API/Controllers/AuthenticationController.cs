@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AdoptPets.Application.Contracts.Interfaces;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
 
 
 namespace AdoptPets.API.Controllers
@@ -90,17 +91,6 @@ namespace AdoptPets.API.Controllers
         [Authorize]
         [HttpGet]
         [Route("currentuserinfo")]
-        /*public async Task<IActionResult> CurrentUserInfo()
-        {
-            string userId = ClaimTypes.NameIdentifier;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { message = "User is not authenticated" });
-            }
-
-            return Ok(new { userID = userId });
-        }*/
         public CurrentUser CurrentUserInfo()
         {
             var currentUserId = currentUserService.GetCurrentUserId();
@@ -142,5 +132,6 @@ namespace AdoptPets.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching user info" });
             }
         }
+       
     }
 }

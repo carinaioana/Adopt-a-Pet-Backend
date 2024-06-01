@@ -1,4 +1,5 @@
-﻿using AdoptPets.Application.Responses;
+﻿using AdoptPets.Application.Models;
+using AdoptPets.Application.Responses;
 
 namespace AdoptPets.Application.Features.Animals.Commands.CreateAnimal
 {

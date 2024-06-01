@@ -36,6 +36,35 @@ namespace AdoptPets.Domain.Entities
             }
             return Result<Deworming>.Success(new Deworming(animalId, date, dewormingType));
         }
-        
+        public void Update(DateTime date, string dewormingType)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            if (string.IsNullOrWhiteSpace(dewormingType))
+            {
+                throw new ArgumentNullException(nameof(dewormingType), "DewormingType is required.");
+            }
+            Date = date;
+            DewormingType = dewormingType;
+        }
+        public void UpdateDewormingType(string dewormingType)
+        {
+            if (string.IsNullOrWhiteSpace(dewormingType))
+            {
+                throw new ArgumentNullException(nameof(dewormingType), "DewormingType is required.");
+            }
+            DewormingType = dewormingType;
+        }
+        public void UpdateDate(DateTime date)
+        {
+            if (date == default)
+            {
+                throw new ArgumentNullException(nameof(date), "Date is required.");
+            }
+            Date = date;
+        }
+
     }
 }

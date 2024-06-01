@@ -1,7 +1,8 @@
-﻿using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
-using AdoptPets.Application.Features.Dewormings.Queries.GetDewormingsByAnimal;
-using AdoptPets.Application.Features.Observations;
+﻿using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
+using AdoptPets.Application.Features.Dewormings.Commands.DeleteDeworming;
 using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
+using AdoptPets.Application.Features.Observations.Commands.DeleteObservation;
+using AdoptPets.Application.Features.Observations.Commands.UpdateObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 using AdoptPets.Application.Features.Observations.Queries.GetByIdObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetObservationsByAnimal;
@@ -24,6 +25,41 @@ namespace AdoptPets.API.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(Guid id, UpdateObservationCommand command)
+        {
+            if (id != command.ObservationId)
+            {
+                return BadRequest("The name in the URL does not match the name in the command.");
+            }
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                if (result.Message == "Observation not found")
+                {
+                    return NotFound(result.Message);
+                }
+
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
+        }
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var deleteEventCommand = new DeleteObservationCommand() { ObservationId = id };
+            await Mediator.Send(deleteEventCommand);
+            return NoContent();
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]

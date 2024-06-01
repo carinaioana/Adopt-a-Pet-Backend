@@ -50,10 +50,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
             {
                 announc.UpdateAnnouncementImageUrl(request.ImageUrl);
             }
-           /* if (request.AnnouncementDate != null)
-            {
-                announc.UpdateAnnouncementDate(request.AnnouncementDate);
-            }*/
+
             announc.LastModifiedDate = DateTime.UtcNow;
 
             var updateResult = await repository.UpdateAsync(announc);
