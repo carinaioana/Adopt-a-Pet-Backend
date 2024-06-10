@@ -62,7 +62,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                     var uploadResult = await s3Service.UploadFileAsync(request.ImageFile);
                     if (uploadResult.Success)
                     {
-                        announcement.Value.AttachImageUrl(request.ImageUrl);
                         request.ImageUrl = uploadResult.Url;
                     }
                     else
@@ -74,10 +73,11 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                         };
                     }
                 }
-                
+                announcement.Value.AttachImageUrl(request.ImageUrl);
+
 #pragma warning restore CS8604 // Possible null reference argument.
 
-                    announcement.Value.CreatedBy = userId;
+                announcement.Value.CreatedBy = userId;
                     announcement.Value.LastModifiedBy = userId;
                     announcement.Value.CreatedDate = DateTime.UtcNow;
                     announcement.Value.LastModifiedDate = DateTime.UtcNow;
@@ -114,7 +114,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                             AnnouncementDate = announcement.Value.AnnouncementDate,
                             AnnouncementDescription = announcement.Value.AnnouncementDescription,
                             ImageUrl = announcement.Value.ImageUrl,
-
 
                         }
                     };
