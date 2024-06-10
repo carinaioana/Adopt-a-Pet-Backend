@@ -6,7 +6,6 @@ using AdoptPets.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement
 {
@@ -16,7 +15,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
         private readonly IAnnouncementRepository announcementRepository;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateAnnouncementCommandHandler> logger;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ICurrentUserService currentUserService;
 
         public CreateAnnouncementCommandHandler(
@@ -31,7 +29,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
             this.announcementRepository = repository;
             this.emailService = emailService;
             this.logger = logger;
-            this.httpContextAccessor = httpContextAccessor;
             this.currentUserService = currentUserService;
         }
 
@@ -65,6 +62,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                     var uploadResult = await s3Service.UploadFileAsync(request.ImageFile);
                     if (uploadResult.Success)
                     {
+                        announcement.Value.AttachImageUrl(request.ImageUrl);
                         request.ImageUrl = uploadResult.Url;
                     }
                     else
@@ -76,7 +74,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                         };
                     }
                 }
-                    announcement.Value.AttachImageUrl(request.ImageUrl);
+                
 #pragma warning restore CS8604 // Possible null reference argument.
 
                     announcement.Value.CreatedBy = userId;

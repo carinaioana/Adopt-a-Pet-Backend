@@ -1,12 +1,12 @@
 ﻿using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
-using AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormings;
 using AdoptPets.Application.Features.Dewormings.Queries.GetByIdDeworming;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
 using AdoptPets.Application.Features.Dewormings.Commands.DeleteDeworming;
-using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
 using AdoptPets.Application.Features.Dewormings.Commands.UpdateDeworming;
+using AdoptPets.Application.Features.Dewormings.Queries.GetDewormingByAnimal;
+using AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormingsByAnimal;
+using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 
 namespace AdoptPets.API.Controllers
 {
@@ -64,6 +64,13 @@ namespace AdoptPets.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetAllDewormingsQuery());
+            return Ok(result);
+        }
+        [HttpGet("AllByAnimal/{animalId}")]
+        public async Task<IActionResult> GetByAnimal(Guid animalId)
+        {
+            var query = new GetAllDewormingsQuery() { AnimalId = animalId };
+            var result = await Mediator.Send(query);
             return Ok(result);
         }
         [HttpGet("{id}")]

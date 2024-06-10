@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AdoptPets.Application.Features.Vaccinations;
 using AdoptPets.Application.Features.Vaccinations.Queries.GetVaccinationsByAnimal;
+using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 
 namespace AdoptPets.API.Controllers
 {
@@ -67,6 +68,13 @@ namespace AdoptPets.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetAllVaccinationsQuery());
+            return Ok(result);
+        }
+        [HttpGet("AllByAnimal/{animalId}")]
+        public async Task<IActionResult> GetByAnimal(Guid animalId)
+        {
+            var query = new GetAllVaccinationsQuery() { AnimalId = animalId };
+            var result = await Mediator.Send(query);
             return Ok(result);
         }
         [HttpGet("{id}")]

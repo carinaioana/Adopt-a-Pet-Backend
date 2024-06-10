@@ -28,5 +28,28 @@ namespace AdoptPets.Infrastructure.Repositories
                 : Result<Deworming>.Failure("Deworming not found for the specified animal ID.");
 
         }
+
+        public async Task<Result<IReadOnlyList<Deworming>>> GetAllByAnimalIdAsync(Guid animalId)
+        {
+            try
+            {
+                var observations = await context.Dewormings
+                    .Where(o => o.AnimalId == animalId)
+                    .Include(o => o.Animal)
+                    .AsNoTracking()
+                    .ToListAsync(); ;
+
+                if (observations.Count == 0)
+                {
+                    return Result<IReadOnlyList<Deworming>>.Failure($"No observations found for animal ID {animalId}.");
+                }
+
+                return Result<IReadOnlyList<Deworming>>.Success(observations);
+            }
+            catch (Exception ex)
+            {
+                return Result<IReadOnlyList<Deworming>>.Failure("Failed to retrieve observations.");
+            }
+        }
     }
 }

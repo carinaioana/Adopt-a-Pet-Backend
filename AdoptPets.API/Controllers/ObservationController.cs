@@ -1,11 +1,11 @@
-﻿using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
-using AdoptPets.Application.Features.Dewormings.Commands.DeleteDeworming;
+﻿using AdoptPets.Application.Features.Observations;
 using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
 using AdoptPets.Application.Features.Observations.Commands.DeleteObservation;
 using AdoptPets.Application.Features.Observations.Commands.UpdateObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetAllObservations;
 using AdoptPets.Application.Features.Observations.Queries.GetByIdObservation;
 using AdoptPets.Application.Features.Observations.Queries.GetObservationsByAnimal;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,13 +61,21 @@ namespace AdoptPets.API.Controllers
             await Mediator.Send(deleteEventCommand);
             return NoContent();
         }
-        [HttpGet]
+       /* [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetAllObservationsQuery());
             return Ok(result);
+        }*/
+        [HttpGet("AllByAnimal/{animalId}")]
+        public async Task<IActionResult> GetByAnimal(Guid animalId)
+        {
+            var query = new GetAllObservationsQuery() {AnimalId = animalId};
+            var result = await Mediator.Send(query);
+            return Ok(result);
         }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)

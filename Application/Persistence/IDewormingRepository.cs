@@ -7,8 +7,7 @@ namespace AdoptPets.Application.Persistence
     {
         Task<bool> IsDewormingTypeAndDateUnique(string deowrmingType, DateTime date);
         Task<Result<Deworming>> FindByAnimalId(Guid animalId);
-
-
+        Task<Result<IReadOnlyList<Deworming>>> GetAllByAnimalIdAsync(Guid animalId);
     }
 
 }

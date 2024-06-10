@@ -3,8 +3,11 @@ using AdoptPets.Application.Features.MedicalHistories.Commands.CreateMedicalHist
 using AdoptPets.Application.Features.MedicalHistories.Commands.DeleteMedicalHistory;
 using AdoptPets.Application.Features.MedicalHistories.Queries.GetAllMedicalHistories;
 using AdoptPets.Application.Features.MedicalHistories.Queries.GetByIdMedicalHistory.GetByIdMedicalHistory;
+using AdoptPets.Application.Features.Vaccinations.Queries.GetVaccinationsByAnimal;
+using AdoptPets.Application.Features.Vaccinations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AdoptPets.Application.Features.MedicalHistories.Queries.GetMedicalHistoryByAnimal;
 
 namespace AdoptPets.API.Controllers
 {
@@ -46,6 +49,15 @@ namespace AdoptPets.API.Controllers
         {
             var result = await Mediator.Send(new GetByIdMedicalHistoryQuery(id));
             return Ok(result);
+        }
+        [HttpGet("animal/{animalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MedicalHistoryDto>> GetByAnimalId(Guid animalId)
+        {
+            var result = await Mediator.Send(new GetMedicalHistoryByAnimalQuery(animalId));
+            return Ok(result);
+
         }
     }
 }

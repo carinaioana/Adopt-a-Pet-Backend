@@ -1,5 +1,4 @@
-﻿using AdoptPets.Application.Features.Observations.Commands.CreateObservation;
-using AdoptPets.Application.Persistence;
+﻿using AdoptPets.Application.Persistence;
 using MediatR;
 
 namespace AdoptPets.Application.Features.Observations.Queries.GetAllObservations
@@ -16,7 +15,8 @@ namespace AdoptPets.Application.Features.Observations.Queries.GetAllObservations
         public async Task<GetAllObservationsResponse> Handle(GetAllObservationsQuery request, CancellationToken cancellationToken)
         {
             GetAllObservationsResponse response = new();
-            var result = await repository.GetAllAsync();
+            var result = await repository.GetAllByAnimalIdAsync(request.AnimalId);
+
             if (result.IsSuccess)
             {
                 response.Observations = result.Value.Select(obs => new ObservationDto

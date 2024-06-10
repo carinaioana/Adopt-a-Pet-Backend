@@ -20,7 +20,11 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
              RuleFor(a => a)
                 .Must(AnnouncementTitleAndDateUnique)
                 .WithMessage("An event with the same name and date already exists.");
-            this.repository = repository;
+             /*RuleFor(x => x.ImageFile.ContentType)
+                 .Must(x => x.Equals("image/jpeg") || x.Equals("image/png"))
+                 .WithMessage("File must be a JPEG or PNG image.");*/
+            
+             this.repository = repository;
         }
         private bool AnnouncementTitleAndDateUnique(CreateAnnouncementCommand command)
         {

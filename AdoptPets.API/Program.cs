@@ -9,6 +9,7 @@ using AdoptPets.API.Utility;
 using AdoptPets.Application.Persistence;
 using AdoptPets.Infrastructure.Repositories;
 using Amazon.S3;
+using S3Service = AdoptPets.Infrastructure.Repositories.S3Service;
 
 
 var builder = WebApplication.CreateBuilder(args);

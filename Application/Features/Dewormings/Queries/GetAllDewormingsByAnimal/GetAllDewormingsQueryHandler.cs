@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using AdoptPets.Application.Persistence;
-using AdoptPets.Application.Features.Dewormings.Commands.CreateDeworming;
 
-namespace AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormings
+namespace AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormingsByAnimal
 {
     public class GetAllDewormingsQueryHandler : IRequestHandler<GetAllDewormingsQuery, GetAllDewormingsResponse>
     {
@@ -16,7 +15,7 @@ namespace AdoptPets.Application.Features.Dewormings.Queries.GetAllDewormings
         public async Task<GetAllDewormingsResponse> Handle(GetAllDewormingsQuery request, CancellationToken cancellationToken)
         {
             GetAllDewormingsResponse response = new();
-            var result = await repository.GetAllAsync();
+            var result = await repository.GetAllByAnimalIdAsync(request.AnimalId);
             if (result.IsSuccess)
             {
                 response.Dewormings = result.Value.Select(deworming => new DewormingDto

@@ -27,5 +27,28 @@ namespace AdoptPets.Infrastructure.Repositories
                 : Result<Observation>.Failure("Observation not found for the specified animal ID.");
 
         }
+
+        public async Task<Result<IReadOnlyList<Observation>>> GetAllByAnimalIdAsync(Guid animalId)
+        {
+            try
+            {
+                var observations = await context.Observations
+                    .Where(o => o.AnimalId == animalId)
+                    .Include(o => o.Animal) 
+                    .AsNoTracking()
+                    .ToListAsync(); ;
+
+                if (observations.Count == 0)
+                {
+                    return Result<IReadOnlyList<Observation>>.Failure($"No observations found for animal ID {animalId}.");
+                }
+
+                return Result<IReadOnlyList<Observation>>.Success(observations);
+            }
+            catch (Exception ex)
+            {
+                return Result<IReadOnlyList<Observation>>.Failure("Failed to retrieve observations.");
+            }
+        }
     }
 }

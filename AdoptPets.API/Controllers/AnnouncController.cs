@@ -23,26 +23,22 @@ namespace AdoptPets.API.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromForm] CreateAnnouncementCommand createAnnouncementCommand, IFormFile imageFile)
+        public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromForm] CreateAnnouncementCommand createAnnouncementCommand, IFormFile? imageFile)
         {
-            if (imageFile != null)
-            {
-                createAnnouncementCommand.ImageFile = imageFile;
-            }
-            else
-            {
-                return BadRequest(new CreateAnnouncementCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = new List<string> { "Image upload failed" }
-                });
-            }
+
+            // Assign imageFile to the command, even if it's null
+            createAnnouncementCommand.ImageFile = imageFile;
 
             var response = await Mediator.Send(createAnnouncementCommand);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
             return Ok(response);
+
         }
-
-
         [HttpGet]
         public async Task<ActionResult<List<AnnouncementDto>>> GetAll()
         {

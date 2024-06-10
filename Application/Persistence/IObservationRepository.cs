@@ -7,7 +7,7 @@ namespace AdoptPets.Application.Persistence
     {
          Task<bool> IsObservationDescriptionAndDateUnique(string observationDescription, DateTime date);
         Task<Result<Observation>> FindByAnimalId(Guid animalId);
-
+        Task<Result<IReadOnlyList<Observation>>> GetAllByAnimalIdAsync(Guid animalId);
     }
 
 }

@@ -3,7 +3,7 @@ using AdoptPets.Application.Features.Dewormings.Queries.GetByIdDeworming;
 using AdoptPets.Application.Persistence;
 using MediatR;
 
-namespace AdoptPets.Application.Features.Dewormings.Queries.GetDewormingsByAnimal
+namespace AdoptPets.Application.Features.Dewormings.Queries.GetDewormingByAnimal
 {
     public class GetByAnimalDewormingQueryHandler : IRequestHandler<GetByAnimalDewormingQuery, GetByAnimalDewormingQueryResponse>
     {

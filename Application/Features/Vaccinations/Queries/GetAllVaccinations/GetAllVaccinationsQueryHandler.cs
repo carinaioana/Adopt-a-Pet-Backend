@@ -16,7 +16,7 @@ namespace AdoptPets.Application.Features.Vaccinations.Queries.GetAllVaccinations
         public async Task<GetAllVaccinationsResponse> Handle(GetAllVaccinationsQuery request, CancellationToken cancellationToken)
         {
             GetAllVaccinationsResponse response = new();
-            var result = await repository.GetAllAsync();
+            var result = await repository.GetAllByAnimalIdAsync(request.AnimalId);
             if (result.IsSuccess)
             {
                 response.Vaccinations = result.Value.Select(vaccinations => new VaccinationDto
