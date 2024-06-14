@@ -1,7 +1,6 @@
 ﻿using AdoptPets.Application.Features.Dewormings;
 using AdoptPets.Application.Features.Observations;
 using AdoptPets.Application.Features.Vaccinations;
-using AdoptPets.Domain.Entities;
 
 namespace AdoptPets.Application.Features
 {
@@ -17,7 +16,7 @@ namespace AdoptPets.Application.Features
         public string? AnimalSex { get; set; }
         public string? ImageUrl { get; set; }
         public MedicalHistoryDto MedicalHistory { get; set; } = default!;
-        public ICollection<VaccinationDto>? Vaccinations { get; set; } 
+        public ICollection<VaccinationDto> Vaccinations { get; set; } 
         public ICollection<ObservationDto>? Observations { get; set; }
         public ICollection<DewormingDto>? Dewormings { get; set; }
     }

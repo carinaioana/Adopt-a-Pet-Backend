@@ -132,6 +132,223 @@ namespace AdoptPets.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching user info" });
             }
         }
-       
+        [HttpPut]
+        [Route("update-email")]
+        [Authorize]
+        public async Task<IActionResult> UpdateEmail(UpdateEmailModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateEmail(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-name")]
+        [Authorize]
+        public async Task<IActionResult> UpdateName(UpdateNameModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateName(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-username")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserName(UpdateUserName model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateUserName(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-location")]
+        [Authorize]
+        public async Task<IActionResult> UpdateLocation(UpdateLocationModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateLocation(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-birthDate")]
+        [Authorize]
+        public async Task<IActionResult> UpdateBirthDate(UpdateBirthDateModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateBirthDate(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-description")]
+        [Authorize]
+        public async Task<IActionResult> UpdateDescription(UpdateDescriptionModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateDescription(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-phoneNumber")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePhoneNumber(UpdatePhoneNumberModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdatePhoneNumber(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("update-profilePhoto")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfilePhoto([FromForm] UpdateProfilePhotoModel model, IFormFile? imageFile)
+        {
+            model.ImageFile = imageFile;
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.UpdateProfilePhoto(model, imageFile);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+     
     }
 }

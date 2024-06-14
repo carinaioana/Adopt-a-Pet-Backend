@@ -1,4 +1,5 @@
 ﻿using AdoptPets.Application.Contracts.Identity;
+using AdoptPets.Application.Persistence;
 using Identity.Models;
 using Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,6 +57,7 @@ namespace Identity
                         });
             services.AddScoped
                <IAuthService, AuthService>();
+
             return services;
         }
     }

@@ -77,7 +77,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 
 #pragma warning restore CS8604 // Possible null reference argument.
 
-                announcement.Value.CreatedBy = userId;
+                    announcement.Value.CreatedBy = userId;
                     announcement.Value.LastModifiedBy = userId;
                     announcement.Value.CreatedDate = DateTime.UtcNow;
                     announcement.Value.LastModifiedDate = DateTime.UtcNow;

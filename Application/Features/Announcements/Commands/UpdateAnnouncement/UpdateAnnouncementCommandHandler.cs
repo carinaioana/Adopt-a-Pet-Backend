@@ -1,15 +1,18 @@
 ﻿using MediatR;
 using AdoptPets.Application.Persistence;
+using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
 
 namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement
 {
     public class UpdateAnnouncementCommandHandler : IRequestHandler<UpdateAnnouncementCommand, UpdateAnnouncementCommandResponse>
     {
         private readonly IAnnouncementRepository repository;
+        private readonly IS3Service s3Service;
 
-        public UpdateAnnouncementCommandHandler(IAnnouncementRepository repository)
+        public UpdateAnnouncementCommandHandler(IAnnouncementRepository repository, IS3Service s3Service)
         {
             this.repository = repository;
+            this.s3Service = s3Service;
         }
 
         public async Task<UpdateAnnouncementCommandResponse> Handle(UpdateAnnouncementCommand request, CancellationToken cancellationToken)
@@ -46,8 +49,21 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
             {
                 announc.UpdateAnnouncementDescription(request.AnnouncementDescription);
             }
-            if(request.ImageUrl != null)
+            if (request.ImageFile != null)
             {
+                var uploadResult = await s3Service.UploadFileAsync(request.ImageFile);
+                if (uploadResult.Success)
+                {
+                    request.ImageUrl = uploadResult.Url;
+                }
+                else
+                {
+                    return new UpdateAnnouncementCommandResponse()
+                    {
+                        Success = false,
+                        ValidationsErrors = new List<string> { "Image upload failed" }
+                    };
+                }
                 announc.UpdateAnnouncementImageUrl(request.ImageUrl);
             }
 

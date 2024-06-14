@@ -28,6 +28,7 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsB
                 AnnouncementTitle = e.AnnouncementTitle,
                 AnnouncementDescription = e.AnnouncementDescription,
                 AnnouncementDate = e.AnnouncementDate,
+                CreatedBy = e.CreatedBy,
             }).ToList();
 
             return new GetAnnouncementsByUserQueryResponse

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\AdoptPets.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\AdoptPets.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

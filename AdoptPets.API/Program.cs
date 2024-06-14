@@ -7,9 +7,10 @@ using Identity;
 using Microsoft.OpenApi.Models;
 using AdoptPets.API.Utility;
 using AdoptPets.Application.Persistence;
-using AdoptPets.Infrastructure.Repositories;
 using Amazon.S3;
 using S3Service = AdoptPets.Infrastructure.Repositories.S3Service;
+using Aspose.Cells.Charts;
+using Identity.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,7 @@ builder.Services.AddCors(options =>
 
 // Register services
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 // Add infrastructure and identity services to DI
@@ -33,6 +35,7 @@ builder.Services.AddInfrastructureToDI(builder.Configuration);
 
 // Add application services
 builder.Services.AddApplicationServices();
+builder.Services.AddScoped<IUserRepository, ApplicationUserRepository>();
 // AWS S3 configuration
 builder.Services.AddAWSService<IAmazonS3>();
 

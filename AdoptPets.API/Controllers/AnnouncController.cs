@@ -1,17 +1,19 @@
-﻿using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
+﻿using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
+using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
+using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Queries;
 using AdoptPets.Application.Features.Announcements.Queries.GetAll;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
-using Amazon.S3.Model;
-using Amazon.S3;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdoptPets.API.Controllers
 {
     public class AnnouncController : ApiControllerBase
     {
+        
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -26,7 +28,6 @@ namespace AdoptPets.API.Controllers
         public async Task<ActionResult<CreateAnnouncementCommandResponse>> Create([FromForm] CreateAnnouncementCommand createAnnouncementCommand, IFormFile? imageFile)
         {
 
-            // Assign imageFile to the command, even if it's null
             createAnnouncementCommand.ImageFile = imageFile;
 
             var response = await Mediator.Send(createAnnouncementCommand);
@@ -38,6 +39,33 @@ namespace AdoptPets.API.Controllers
 
             return Ok(response);
 
+        }
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(Guid id, [FromForm] UpdateAnnouncementCommand command, IFormFile? imageFile)
+        {
+            if (id != command.AnnouncementId)
+            {
+                return BadRequest("The name in the URL does not match the name in the command.");
+            }
+
+            command.ImageFile = imageFile;
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                if (result.Message == "Announcement not found")
+                {
+                    return NotFound(result.Message);
+                }
+
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
         }
         [HttpGet]
         public async Task<ActionResult<List<AnnouncementDto>>> GetAll()
@@ -70,5 +98,6 @@ namespace AdoptPets.API.Controllers
             }
             return Ok(result.Announcement);
         }
+    
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Transfer;
 using Microsoft.Extensions.Configuration;
+using System.Drawing;
 
 namespace AdoptPets.Application
 {
@@ -29,6 +30,14 @@ namespace AdoptPets.Application
             await fileTransferUtility.UploadAsync(uploadRequest);
 
             return $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
+        }
+        public async Task<Bitmap> DownloadImageAsync(string key)
+        {
+            using (var response = await _s3Client.GetObjectAsync(_bucketName, key))
+            using (var responseStream = response.ResponseStream)
+            {
+                return new Bitmap(responseStream);
+            }
         }
     }
 }

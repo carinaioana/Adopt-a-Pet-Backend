@@ -1,7 +1,4 @@
-﻿using AdoptPets.Application.Models;
-using AdoptPets.Domain.Entities;
-
-namespace AdoptPets.Application.Features
+﻿namespace AdoptPets.Application.Features
 {
     public class MedicalHistoryDto
     {
@@ -9,6 +6,9 @@ namespace AdoptPets.Application.Features
         public string UserId { get; set; } = default!;
         public Guid AnimalId { get; set; }
         public AnimalDto Animal { get; set; }
+/*        public DewormingDto Deworming { get; set; }
+        public VaccinationDto Vaccination { get; set; }
+        public ObservationDto Observation { get; set; }*/
 
     }
 }

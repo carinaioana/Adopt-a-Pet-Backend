@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement
 {
@@ -9,5 +10,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
         public DateTime AnnouncementDate { get; set; }
         public string? ImageUrl { get; set; }
         public string? AnnouncementDescription { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }

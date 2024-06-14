@@ -1,11 +1,7 @@
-﻿using System.Threading;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 using AdoptPets.Application.Persistence;
+using AdoptPets.Application.Features.Dewormings;
+using AdoptPets.Application.Features.Vaccinations;
 using AdoptPets.Application.Features.Observations;
 
 namespace AdoptPets.Application.Features.MedicalHistories.Queries.GetMedicalHistoryByAnimal
@@ -29,6 +25,7 @@ namespace AdoptPets.Application.Features.MedicalHistories.Queries.GetMedicalHist
                     MedicalHistoryId = deworming.Value.MedicalHistoryId,
                     UserId = deworming.Value.UserId,
                     AnimalId = deworming.Value.AnimalId,
+                  
                 };
             }
             return new MedicalHistoryDto();

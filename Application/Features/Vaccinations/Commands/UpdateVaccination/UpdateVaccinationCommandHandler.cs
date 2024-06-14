@@ -1,13 +1,5 @@
-﻿using System.Threading;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 using AdoptPets.Application.Persistence;
-using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
-using AdoptPets.Application.Features.Dewormings.Commands.UpdateDeworming;
 
 namespace AdoptPets.Application.Features.Vaccinations.Commands.UpdateVaccination
 {
