@@ -1,4 +1,5 @@
-﻿using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
+﻿using AdoptPets.API.Models;
+using AdoptPets.Application.Features.Animals.Commands.UpdateAnimal;
 using AdoptPets.Application.Features.Announcements.Commands.CreateAnnouncement;
 using AdoptPets.Application.Features.Announcements.Commands.DeleteAnnouncement;
 using AdoptPets.Application.Features.Announcements.Commands.UpdateAnnouncement;
@@ -12,7 +13,12 @@ namespace AdoptPets.API.Controllers
 {
     public class AnnouncController : ApiControllerBase
     {
-        
+        private readonly ImageSimilarityService _imageSimilarityService;
+
+        public AnnouncController(ImageSimilarityService imageSimilarityService)
+        {
+            _imageSimilarityService = imageSimilarityService;
+        }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -98,6 +104,13 @@ namespace AdoptPets.API.Controllers
             }
             return Ok(result.Announcement);
         }
-    
+
+        [HttpPost("find-similar")]
+        public async Task<IActionResult> FindSimilar([FromBody] FindSimilarRequest request)
+        {
+            var result = await _imageSimilarityService.GetSimilarImagesAsync(request.ImageUrl, request.Label, request.K);
+            return Ok(result);
+        }
+
     }
 }

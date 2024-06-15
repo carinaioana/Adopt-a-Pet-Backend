@@ -17,6 +17,10 @@ namespace AdoptPets.Domain.Entities
         public DateTime AnnouncementDate { get; private set; }
         public string? AnnouncementDescription { get; private set; }
         public string? ImageUrl { get; private set; }
+        public string? AnimalType { get; private set; }
+        public string? AnimalBreed { get; private set; }
+        public string? AnimalGender { get; private set; }
+        public string? Location { get; private set; }
         public static Result<Announcement> Create(string announcementTitle, DateTime announcementDate)
         {
             if (string.IsNullOrWhiteSpace(announcementTitle))
@@ -29,7 +33,34 @@ namespace AdoptPets.Domain.Entities
             }
             return Result<Announcement>.Success(new Announcement(announcementTitle, announcementDate));
         }
-
+        public void AttachAnimalType(string animalType)
+        {
+            if (!string.IsNullOrEmpty(animalType))
+            {
+                AnimalType = animalType;
+            }
+        }
+        public void AttachAnimalBreed(string animalBreed)
+        {
+            if (!string.IsNullOrEmpty(animalBreed))
+            {
+                AnimalBreed = animalBreed;
+            }
+        }
+        public void AttachAnimalGender(string animalGender)
+        {
+            if (!string.IsNullOrEmpty(animalGender))
+            {
+                AnimalGender = animalGender;
+            }
+        }
+        public void AttachLocation(string location)
+        {
+            if (!string.IsNullOrEmpty(location))
+            {
+                Location = location;
+            }
+        }
         public void AttachDescription(string description)
         {
             if (!string.IsNullOrEmpty(description))

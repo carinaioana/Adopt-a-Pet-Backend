@@ -81,6 +81,15 @@ namespace AdoptPets.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AnimalBreed")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AnimalGender")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AnimalType")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("AnnouncementDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -105,6 +114,9 @@ namespace AdoptPets.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
 
                     b.HasKey("AnnouncementId");
 

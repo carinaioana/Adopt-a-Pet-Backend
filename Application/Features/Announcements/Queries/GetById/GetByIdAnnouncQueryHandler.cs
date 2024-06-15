@@ -22,6 +22,10 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetById
                     AnnouncementDate = announc.Value.AnnouncementDate,
                     AnnouncementDescription = announc.Value.AnnouncementDescription,
                     ImageUrl = announc.Value.ImageUrl,
+                    AnimalBreed = announc.Value.AnimalBreed,
+                    AnimalGender = announc.Value.AnimalGender,
+                    AnimalType = announc.Value.AnimalType,
+                    Location = announc.Value.Location
                 };
             }
             return new AnnouncementDto();

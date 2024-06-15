@@ -1,10 +1,4 @@
-﻿using AdoptPets.Application.Features.Announcements.Queries.GetById;
-using AdoptPets.Application.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AdoptPets.Application.Persistence;
 
 namespace AdoptPets.Application.Features.Announcements.Queries.GetByTitle
 {

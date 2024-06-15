@@ -33,7 +33,11 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails
                     AnnouncementDescription = announc.Value.AnnouncementDescription,
                     AnnouncementDate = announc.Value.AnnouncementDate,
                     ImageUrl = announc.Value.ImageUrl,
-                   
+                    AnimalBreed = announc.Value.AnimalBreed,
+                    AnimalGender = announc.Value.AnimalGender,
+                    AnimalType = announc.Value.AnimalType,
+                    Location = announc.Value.Location,
+
 
                 }
             };

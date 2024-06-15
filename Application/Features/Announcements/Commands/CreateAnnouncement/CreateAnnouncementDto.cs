@@ -7,6 +7,10 @@
         public DateTime AnnouncementDate { get; set; }
         public string? ImageUrl { get; set; }
         public string? AnnouncementDescription { get; set; }
+        public string? AnimalType { get; set; }
+        public string? AnimalBreed { get; set; }
+        public string? AnimalGender { get; set; }
+        public string? Location { get; set; }
 
     }
 }

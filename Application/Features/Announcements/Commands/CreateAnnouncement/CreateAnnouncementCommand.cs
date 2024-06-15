@@ -13,5 +13,10 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
         public string? AnnouncementDescription { get; set; }
         public IFormFile? ImageFile { get; set; }
 
+        public string? AnimalType { get;  set; }
+        public string? AnimalBreed { get;  set; }
+        public string? AnimalGender { get;  set; }
+        public string? Location { get;  set; }
+
     }
 }

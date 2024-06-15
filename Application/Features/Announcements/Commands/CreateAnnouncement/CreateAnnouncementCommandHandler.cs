@@ -77,13 +77,18 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
 
 #pragma warning restore CS8604 // Possible null reference argument.
 
-                    announcement.Value.CreatedBy = userId;
-                    announcement.Value.LastModifiedBy = userId;
-                    announcement.Value.CreatedDate = DateTime.UtcNow;
-                    announcement.Value.LastModifiedDate = DateTime.UtcNow;
+                announcement.Value.CreatedBy = userId;
+                announcement.Value.LastModifiedBy = userId;
+                announcement.Value.CreatedDate = DateTime.UtcNow;
+                announcement.Value.LastModifiedDate = DateTime.UtcNow;
+                announcement.Value.AttachAnimalType(request.AnimalType);
+                announcement.Value.AttachAnimalBreed(request.AnimalBreed);
+                announcement.Value.AttachAnimalGender(request.AnimalGender);
+                announcement.Value.AttachLocation(request.Location);
 
 
-                    var result = announcementRepository.AddAsync(announcement.Value);
+
+                var result = announcementRepository.AddAsync(announcement.Value);
 
                     var email = new Mail
                     {
@@ -114,6 +119,10 @@ namespace AdoptPets.Application.Features.Announcements.Commands.CreateAnnounceme
                             AnnouncementDate = announcement.Value.AnnouncementDate,
                             AnnouncementDescription = announcement.Value.AnnouncementDescription,
                             ImageUrl = announcement.Value.ImageUrl,
+                            AnimalType = announcement.Value.AnimalType,
+                            AnimalBreed = announcement.Value.AnimalBreed,
+                            AnimalGender = announcement.Value.AnimalGender,
+                            Location = announcement.Value.Location
 
                         }
                     };

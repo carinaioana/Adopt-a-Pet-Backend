@@ -66,6 +66,22 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
                 }
                 announc.UpdateAnnouncementImageUrl(request.ImageUrl);
             }
+            if (request.AnimalType != null)
+            {
+                announc.AttachAnimalType(request.AnimalType);
+            }
+            if (request.AnimalBreed != null )
+            {
+                announc.AttachAnimalBreed(request.AnimalBreed);
+            }
+            if (request.AnimalGender != null)
+            {
+                announc.AttachAnimalGender(request.AnimalGender);
+            }
+            if (request.Location != null)
+            {
+                announc.AttachLocation(request.Location);
+            }
 
             announc.LastModifiedDate = DateTime.UtcNow;
 
