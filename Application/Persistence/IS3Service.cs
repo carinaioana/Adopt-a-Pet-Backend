@@ -4,6 +4,6 @@ namespace AdoptPets.Application.Persistence
 {
     public interface IS3Service
     {
-        Task<(bool Success, string Url)> UploadFileAsync(IFormFile file);
+        Task<(bool Success, string Url)> UploadFileAsync(IFormFile fileStream, string animalType, string animalBreed);
     }
 }

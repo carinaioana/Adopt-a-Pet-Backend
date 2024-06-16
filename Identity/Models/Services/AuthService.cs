@@ -228,7 +228,7 @@ namespace Identity.Services
             }
             if (imageFile != null)
             {
-                var uploadResult = await s3Service.UploadFileAsync(imageFile);
+                var uploadResult = await s3Service.UploadFileAsync(imageFile, "Users", user.Id);
                 if (uploadResult.Success)
                 {
                     model.NewProfilePhotoUrl = uploadResult.Url;

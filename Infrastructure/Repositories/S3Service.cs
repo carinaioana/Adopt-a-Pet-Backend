@@ -22,16 +22,16 @@ namespace AdoptPets.Infrastructure.Repositories
 
         public S3Service(IAmazonS3 s3Client, IConfiguration configuration, ILogger<S3Service> logger)
         {
-            _s3Client = _s3Client = new AmazonS3Client(
+            _s3Client = new AmazonS3Client(
                 new BasicAWSCredentials(
-                    configuration["AWS:AccessKey"], 
+                    configuration["AWS:AccessKey"],
                     configuration["AWS:SecretKey"]),
                 RegionEndpoint.GetBySystemName(configuration["AWS:Region"]));
             _logger = logger;
             _bucketName = configuration["AWS:BucketName"];
         }
 
-        public async Task<(bool Success, string Url)> UploadFileAsync(IFormFile file)
+        public async Task<(bool Success, string Url)> UploadFileAsync(IFormFile file, string animalType, string animalBreed)
         {
             if (file == null || file.Length == 0)
             {
@@ -39,7 +39,9 @@ namespace AdoptPets.Infrastructure.Repositories
                 return (false, null);
             }
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            // Construct the file path based on animal type and breed
+            string folderPath = $"{animalType.ToLower()}s/{animalBreed.ToLower()}/";
+            var fileName = folderPath + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
             try
             {
@@ -82,4 +84,5 @@ namespace AdoptPets.Infrastructure.Repositories
             }
         }
     }
+
 }

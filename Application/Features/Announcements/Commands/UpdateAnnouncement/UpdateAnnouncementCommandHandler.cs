@@ -51,7 +51,7 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
             }
             if (request.ImageFile != null)
             {
-                var uploadResult = await s3Service.UploadFileAsync(request.ImageFile);
+                var uploadResult = await s3Service.UploadFileAsync(request.ImageFile, request.AnimalType, request.AnimalBreed);
                 if (uploadResult.Success)
                 {
                     request.ImageUrl = uploadResult.Url;

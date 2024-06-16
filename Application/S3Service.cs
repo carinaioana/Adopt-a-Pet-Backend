@@ -16,12 +16,15 @@ namespace AdoptPets.Application
             _bucketName = configuration["AWS:BucketName"];
         }
 
-        public async Task<string> UploadFileAsync(Stream fileStream, string fileName)
+        public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string animalType, string animalBreed)
         {
+            string folderPath = $"{animalType.ToLower()}s/{animalBreed.ToLower()}/";
+            string key = $"{folderPath}{fileName}";
+
             var uploadRequest = new TransferUtilityUploadRequest
             {
                 InputStream = fileStream,
-                Key = fileName,
+                Key = key,
                 BucketName = _bucketName,
                 CannedACL = S3CannedACL.PublicRead
             };
@@ -29,8 +32,9 @@ namespace AdoptPets.Application
             var fileTransferUtility = new TransferUtility(_s3Client);
             await fileTransferUtility.UploadAsync(uploadRequest);
 
-            return $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
+            return $"https://{_bucketName}.s3.amazonaws.com/{key}";
         }
+
         public async Task<Bitmap> DownloadImageAsync(string key)
         {
             using (var response = await _s3Client.GetObjectAsync(_bucketName, key))
@@ -40,4 +44,5 @@ namespace AdoptPets.Application
             }
         }
     }
+
 }

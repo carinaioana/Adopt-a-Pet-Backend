@@ -17,9 +17,6 @@ namespace AdoptPets.Application.Features.Announcements.Commands.UpdateAnnounceme
             RuleFor(a => a.AnnouncementDate)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
-            RuleFor(a => a)
-               .Must(AnnouncementTitleAndDateUnique)
-               .WithMessage("An event with the same name and date already exists.");
             this.repository = repository;
         }
 
