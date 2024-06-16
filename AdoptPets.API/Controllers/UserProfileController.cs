@@ -31,7 +31,7 @@ namespace AdoptPets.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetUserProfile(string id)
+        public async Task<IActionResult> GetUserProfileById(string id)
         {
             try
             {

@@ -116,7 +116,12 @@ namespace Identity.Services
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                Name = user.Name // Access the custom Name property
+                Name = user.Name,
+                Location = user.Location,
+                BirthDate = user.BirthDate,
+                Description = user.Description,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePhoto = user.ProfileImageUrl
             };
         }
         public async Task<(int status, string message)> UpdateEmail(UpdateEmailModel model)
