@@ -24,6 +24,7 @@ namespace AdoptPets.Application.Features.Animals.Queries.GetById
                     AnimalType = animal.Value.AnimalType,
                     AnimalBreed = animal.Value.AnimalBreed,
                     AnimalAge = animal.Value.AnimalAge,
+                    AnimalSex = animal.Value.AnimalSex,
                     AnimalDescription = animal.Value.AnimalDescription,
                     PersonalityTraits = animal.Value.PersonalityTraits,
                     ImageUrl = animal.Value.ImageUrl,

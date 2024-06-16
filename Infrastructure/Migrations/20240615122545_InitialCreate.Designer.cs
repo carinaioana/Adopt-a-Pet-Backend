@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AdoptPets.Infrastructure.Migrations
 {
     [DbContext(typeof(AdoptPetsContext))]
-    [Migration("20240615120736_InitialCreate")]
+    [Migration("20240615122545_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
