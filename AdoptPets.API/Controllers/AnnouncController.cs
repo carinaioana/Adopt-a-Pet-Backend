@@ -7,6 +7,7 @@ using AdoptPets.Application.Features.Announcements.Queries;
 using AdoptPets.Application.Features.Announcements.Queries.GetAll;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
 using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
+using AdoptPets.Application.Features.Announcements.Queries.GetByImageUrl;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdoptPets.API.Controllers
@@ -110,6 +111,19 @@ namespace AdoptPets.API.Controllers
         {
             var result = await _imageSimilarityService.GetSimilarImagesAsync(request.ImageUrl, request.Label, request.K);
             return Ok(result);
+        }
+        [HttpPost("find-by-images/{imageUrl}")]
+        public async Task<ActionResult<AnnouncementDto>> FindByImagesAsync(string imageUrl)
+        {
+            var result = await Mediator.Send(new GetByImageUrlQuery()
+            {
+                ImageUrl = imageUrl
+            });
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+            return Ok(result.Announcement);
         }
 
     }

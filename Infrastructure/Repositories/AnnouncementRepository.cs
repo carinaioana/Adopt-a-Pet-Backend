@@ -1,7 +1,9 @@
 ﻿using AdoptPets.Application.Persistence;
 using AdoptPets.Domain.Common;
 using AdoptPets.Domain.Entities;
+using Aspose.Cells.Charts;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace AdoptPets.Infrastructure.Repositories
 {
@@ -44,7 +46,29 @@ namespace AdoptPets.Infrastructure.Repositories
             .Where(a => a.CreatedBy != null && a.CreatedBy == userId)
             .ToListAsync();
         }
-       
+
+        public async Task<Result<Announcement>> FindByImageAsync(string imageUrl)
+        {
+            try
+            {
+                var decodedImageUrl = HttpUtility.UrlDecode(imageUrl).ToLower();
+                var announcement = await context.Announcements
+                    .FirstOrDefaultAsync(a => a.ImageUrl.ToLower() == decodedImageUrl);
+
+
+                if (announcement == null)
+                {
+                    return Result<Announcement>.Failure($"Announcement with image URL '{imageUrl}' not found");
+                }
+
+                return Result<Announcement>.Success(announcement);
+            }
+            catch (Exception ex)
+            {
+                return Result<Announcement>.Failure($"An error occurred while retrieving the announcement: {ex.Message}");
+            }
+
+        }
     }
 }
 

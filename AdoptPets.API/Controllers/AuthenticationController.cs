@@ -111,7 +111,6 @@ namespace AdoptPets.API.Controllers
                 Claims = currentClaimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value)
             };
         }
-        [Authorize]
         [HttpGet]
         [Route("userinfo/{id}")]
         public async Task<IActionResult> GetUserInfoById(string id)

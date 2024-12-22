@@ -1,29 +1,31 @@
 ﻿using MediatR;
 using AdoptPets.Application.Persistence;
+using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncementsByUser;
+using AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails;
 
-namespace AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails
+namespace AdoptPets.Application.Features.Announcements.Queries.GetByImageUrl
 {
-    public class GetAnnouncDetailQueryHandler : IRequestHandler<GetAnnouncDetailQuery, GetAnnouncDetailQueryResponse>
+    public class GetByImageUrlQueryHandler : IRequestHandler<GetByImageUrlQuery, GetByImageUrlQueryResponse>
     {
-        private readonly IAnnouncementRepository repository;
+        private readonly IAnnouncementRepository _repository;
 
-        public GetAnnouncDetailQueryHandler(IAnnouncementRepository repository)
+        public GetByImageUrlQueryHandler(IAnnouncementRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
 
-        public async Task<GetAnnouncDetailQueryResponse> Handle(GetAnnouncDetailQuery request, CancellationToken cancellationToken)
+        public async Task<GetByImageUrlQueryResponse> Handle(GetByImageUrlQuery request, CancellationToken cancellationToken)
         {
-            var announc = await repository.FindByIdAsync(request.AnnouncementId);
+            var announc = await _repository.FindByImageAsync(request.ImageUrl);
             if (!announc.IsSuccess)
             {
-                return new GetAnnouncDetailQueryResponse
+                return new GetByImageUrlQueryResponse
                 {
                     Success = false,
-                    ValidationsErrors = [ announc.Error ]
+                    ValidationsErrors = [announc.Error]
                 };
             }
-            return new GetAnnouncDetailQueryResponse
+            return new GetByImageUrlQueryResponse
             {
                 Success = true,
                 Announcement = new AnnouncementDto
@@ -37,12 +39,11 @@ namespace AdoptPets.Application.Features.Announcements.Queries.GetAnnouncDetails
                     AnimalGender = announc.Value.AnimalGender,
                     AnimalType = announc.Value.AnimalType,
                     Location = announc.Value.Location,
-                    CreatedBy = announc.Value.CreatedBy,
 
 
                 }
             };
-
         }
     }
+
 }

@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoptPets.API", "AdoptPets.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoptPets.Infrastructure", "Infrastructure\AdoptPets.Infrastructure.csproj", "{753A550B-4E38-47BB-89AA-2B005DE66583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Identity\Identity.csproj", "{DAD53D7C-2314-4E84-BED6-32CDE4E0A431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Identity\Identity.csproj", "{DAD53D7C-2314-4E84-BED6-32CDE4E0A431}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

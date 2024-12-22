@@ -9,6 +9,7 @@ namespace AdoptPets.Application.Persistence
         Task<Result<Announcement>> FindByTitleAsync(string title);
         Task<bool> IsAnnouncementTitleAndDateUnique(string announcementTitle, DateTime announcementDate);
         Task<List<Announcement>> GetAnnouncementsByUserAsync(string userId);
+        Task<Result<Announcement>> FindByImageAsync(string imageUrl);
         //Task<(bool Success, string Url)> UploadFileToS3(IFormFile file);
 
 
