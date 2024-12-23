@@ -11,6 +11,7 @@ using Amazon.S3;
 using S3Service = AdoptPets.Infrastructure.Repositories.S3Service;
 using Identity.Services;
 using Aspose.Cells.Charts;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,11 @@ builder.Services.AddHttpClient<ImageSimilarityService>();
 // Add infrastructure and identity services to DI
 builder.Services.AddInfrastrutureIdentityToDI(builder.Configuration);
 builder.Services.AddInfrastructureToDI(builder.Configuration);
+
+var connectionString = Environment.GetEnvironmentVariable("ADOPT_PETS_CONNECTION");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 
 // Add application services
 builder.Services.AddApplicationServices();
