@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOTNET_ROOT = '/usr/share/dotnet'
+        DOTNET_ROOT = '/usr/share/dotnet'  // Changed from DOTNET_HOME to DOTNET_ROOT for consistency
         PATH = "${env.DOTNET_ROOT}:${env.PATH}"
         DOTNET_SDK_VERSION = '8.0.111'
         ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
@@ -17,25 +17,25 @@ pipeline {
         
         stage('Restore Dependencies') {
             steps {
-                sh '${DOTNET_ROOT}/dotnet restore'
+                sh 'dotnet restore'
             }
         }
         
         stage('Build') {
             steps {
-                sh '${DOTNET_ROOT}/dotnet build --no-restore -c Release'
+                sh 'dotnet build --no-restore -c Release'
             }
         }
         
         stage('Run Tests') {
             steps {
-                sh '${DOTNET_ROOT}/dotnet test --no-build -c Release'
+                sh 'dotnet test --no-build -c Release'
             }
         }
         
         stage('Publish Artifacts') {
             steps {
-                sh '${DOTNET_ROOT}/dotnet publish -c Release -o ./publish'
+                sh 'dotnet publish -c Release -o ./publish'
                 archiveArtifacts artifacts: 'publish/**/*', fingerprint: true
             }
         }
