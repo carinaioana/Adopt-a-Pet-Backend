@@ -1,41 +1,45 @@
 pipeline {
     agent any
     environment {
-        DOTNET_HOME = '/usr/share/dotnet'
-        PATH = "${env.DOTNET_HOME}:${env.PATH}"
+        DOTNET_ROOT = '/usr/share/dotnet'
+        PATH = "${env.DOTNET_ROOT}:${env.PATH}"
         DOTNET_SDK_VERSION = '8.0.111'
-   	    ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
+        ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
         ADOPT_PETS_USER_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsUserDB;User Id=postgres;Password=carina;'
- 
     }
+    
     stages {
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/carinaioana/Adopt-a-Pet-Backend.git'
             }
         }
+        
         stage('Restore Dependencies') {
             steps {
-                sh 'dotnet restore'
+                sh '${DOTNET_ROOT}/dotnet restore'
             }
         }
         
         stage('Build') {
             steps {
-                sh 'dotnet build --no-restore -c Release'
+                sh '${DOTNET_ROOT}/dotnet build --no-restore -c Release'
             }
         }
+        
         stage('Run Tests') {
             steps {
-                sh 'dotnet test --no-build -c Release'
+                sh '${DOTNET_ROOT}/dotnet test --no-build -c Release'
             }
         }
+        
         stage('Publish Artifacts') {
             steps {
-                sh 'dotnet publish -c Release -o ./publish'
+                sh '${DOTNET_ROOT}/dotnet publish -c Release -o ./publish'
                 archiveArtifacts artifacts: 'publish/**/*', fingerprint: true
             }
         }
+        
         stage('Deploy') {
             steps {
                 sshagent(credentials: ['ssh-credentials-id']) {
