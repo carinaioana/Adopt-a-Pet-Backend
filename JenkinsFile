@@ -19,7 +19,7 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
-                sh 'dotnet restore'
+                sh '/usr/lib/dotnet/dotnet restore'
             }
         }
 
