@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOTNET_HOME = '/usr/bin/dotnet'
+        DOTNET_HOME = '/usr/lib/dotnet'
         PATH = "${env.DOTNET_HOME}:${env.PATH}"
         DOTNET_SDK_VERSION = '8.0.111'
    	    ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
