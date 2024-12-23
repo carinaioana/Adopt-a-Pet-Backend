@@ -1,53 +1,68 @@
 pipeline {
     agent any
-
+    
     environment {
-        DOTNET_HOME = '/usr/lib/dotnet'
-        PATH = "${env.DOTNET_HOME}:${env.PATH}"
+        // Updated dotnet paths and version
+        DOTNET_ROOT = '/usr/share/dotnet'  // Standard installation path for .NET
+        PATH = "${env.DOTNET_ROOT}:${env.PATH}"
         DOTNET_SDK_VERSION = '8.0.111'
-   	    ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
+        ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
         ADOPT_PETS_USER_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsUserDB;User Id=postgres;Password=carina;'
- 
     }
-
+    
     stages {
+        stage('Install .NET SDK') {
+            steps {
+                sh '''
+                    # Download and install .NET SDK if not present
+                    if [ ! -d "${DOTNET_ROOT}" ]; then
+                        wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+                        chmod +x dotnet-install.sh
+                        ./dotnet-install.sh --version ${DOTNET_SDK_VERSION} --install-dir ${DOTNET_ROOT}
+                    fi
+                    # Verify installation
+                    ${DOTNET_ROOT}/dotnet --version
+                '''
+            }
+        }
+        
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/carinaioana/Adopt-a-Pet-Backend.git'
             }
         }
-
+        
         stage('Restore Dependencies') {
             steps {
-                sh '/usr/lib/dotnet/dotnet restore'
+                sh '${DOTNET_ROOT}/dotnet restore'
             }
         }
-
+        
         stage('Build') {
             steps {
-                sh 'dotnet build --no-restore -c Release'
+                sh '${DOTNET_ROOT}/dotnet build --no-restore -c Release'
             }
         }
-
+        
         stage('Run Tests') {
             steps {
-                sh 'dotnet test --no-build -c Release'
+                sh '${DOTNET_ROOT}/dotnet test --no-build -c Release'
             }
         }
-
+        
         stage('Publish Artifacts') {
             steps {
-                sh 'dotnet publish -c Release -o ./publish'
+                sh '${DOTNET_ROOT}/dotnet publish -c Release -o ./publish'
                 archiveArtifacts artifacts: 'publish/**/*', fingerprint: true
             }
         }
-
+        
         stage('Deploy') {
             steps {
                 sshagent(credentials: ['ssh-credentials-id']) {
                     sh '''
-                    scp -r publish/ carina@172.22.126.42:/home/carina/myapp/Adopt-a-Pet
-                    ssh carina@172.22.126.42 'systemctl restart myapp'
+                        scp -r publish/ carina@172.22.126.42:/home/carina/myapp/Adopt-a-Pet
+                        ssh carina@172.22.126.42 'systemctl restart myapp'
                     '''
                 }
             }
