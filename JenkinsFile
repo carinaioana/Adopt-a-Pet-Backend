@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOTNET_HOME = '/usr/lib/dotnet'
+        DOTNET_HOME = '/usr/share/dotnet'
         PATH = "${env.DOTNET_HOME}:${env.PATH}"
         DOTNET_SDK_VERSION = '8.0.111'
    	    ADOPT_PETS_CONNECTION = 'Server=localhost;Port=5432;Database=AdoptPetsDB;User Id=postgres;Password=carina;'
@@ -12,11 +12,6 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/carinaioana/Adopt-a-Pet-Backend.git'
-            }
-        }
-        stage('Restore Dependencies') {
-            steps {
-                sh '/usr/lib/dotnet/dotnet restore'
             }
         }
         stage('Build') {
